@@ -29,21 +29,12 @@
 </template>
 
 <script>
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPlayCircle } from "@fortawesome/free-solid-svg-icons";
-import Button from "../UI/Button";
-
-library.add(faPlayCircle);
+import Button from "./UI/Button";
 
 export default {
   name: "el-header",
   components: {
     "el-button": Button,
-  },
-  data() {
-    return {
-      msg: "Welcome to Your Vue.js App",
-    };
   },
 };
 </script>

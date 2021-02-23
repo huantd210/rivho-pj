@@ -5,10 +5,10 @@
     </header>
     <main class="app__main">
       <aside class="app__main__left">
-        <el-sidebar></el-sidebar>
+        <order></order>
       </aside>
       <section class="app__main__right">
-        <el-content></el-content>
+        <gantt></gantt>
       </section>
     </main>
     <main></main>
@@ -16,16 +16,26 @@
 </template>
 
 <script>
-import Header from "./components/Layout/Header";
-import Sidebar from "./components/Layout/Sidebar";
-import Content from "./components/Layout/Content";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faCog,
+  faListAlt,
+  faPencilAlt,
+  faPlayCircle,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
+import Header from "./components/Header";
+import Order from "./components/Order/Main";
+import Gantt from "./components/Gantt/Main";
+
+library.add(faCog, faListAlt, faPlayCircle, faPencilAlt, faSearch);
 
 export default {
   name: "app",
   components: {
     "el-header": Header,
-    "el-sidebar": Sidebar,
-    "el-content": Content,
+    Order,
+    Gantt,
   },
   data() {
     return {

@@ -1,12 +1,15 @@
-import Vue from 'vue'
-import App from './App.vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import Vue from "vue";
+import Vuex from "vuex";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import App from "./App.vue";
+import store from "./store";
 
-
-Vue.component('font-awesome-icon', FontAwesomeIcon)
-Vue.config.productionTip = false
+Vue.use(Vuex);
+Vue.component("font-awesome-icon", FontAwesomeIcon);
+Vue.config.productionTip = false;
 
 new Vue({
-  el: '#app',
+  el: "#app",
+  store,
   render: h => h(App)
-})
+});
