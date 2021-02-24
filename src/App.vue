@@ -76,10 +76,16 @@ export default {
 
 .app__main__left {
   margin-right: 10px;
+  padding-top: 24px;
+  padding-left: 8px;
   flex: 1 1 20%;
+  background-color: #576574;
 }
 
 .app__main__right {
+  padding-left: 8px;
+  padding-top: 2px;
   flex: 1 1 80%;
+  background-color: #576574;
 }
 </style>

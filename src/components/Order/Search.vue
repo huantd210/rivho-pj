@@ -39,7 +39,7 @@ export default {
 
 <style scoped>
 .order-search {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   justify-content: flex-end;

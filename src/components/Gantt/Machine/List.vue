@@ -24,9 +24,6 @@ export default {
   computed: {
     ...mapGetters(["getMachineList"]),
   },
-  created() {
-    console.log(this.machines);
-  },
 };
 </script>
 

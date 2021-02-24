@@ -36,9 +36,6 @@ export default {
       },
     },
   },
-  created() {
-    console.log(this.machine);
-  },
 };
 </script>
 

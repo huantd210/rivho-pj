@@ -30,10 +30,7 @@ export default {
 .order {
   width: 100%;
   height: 100%;
-  padding-top: 12px;
-  padding-left: 8px;
   border-top-left-radius: 8px;
-  background-color: #576574;
   display: flex;
   flex-direction: column;
 }

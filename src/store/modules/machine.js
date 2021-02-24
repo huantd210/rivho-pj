@@ -20,9 +20,21 @@ export default {
       const fetchMachineList = async () => {
         try {
           const result = await axios.get("machines");
-          context.commit(MACHINE_GET_LIST, {
-            machineList: result.data
-          });
+
+          if (result.data.length > 0) {
+            let machineList = result.data.map(item => {
+              return {
+                id: item.id,
+                code: item.code,
+                name: item.name,
+                describe: item.describe
+              };
+            });
+
+            context.commit(MACHINE_GET_LIST, {
+              machineList
+            });
+          }
         } catch (error) {
           if (error) console.error(error);
         }
