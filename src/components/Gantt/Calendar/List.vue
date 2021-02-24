@@ -1,18 +1,29 @@
 <template>
-  <div class="gantt__calendar" :blocks="getBlocks"></div>
+  <div class="gantt__calendar">
+    <item-grid
+      v-for="item in getCalendarList"
+      :key="item.id"
+      :calendar="item"
+      :styleCell="styleCell"
+    ></item-grid>
+  </div>
 </template>
 
 <script>
 import moment from "moment";
+import ItemGrid from "./Item/Grid";
 
 export default {
   name: "gantt-calendar",
+  components: {
+    ItemGrid,
+  },
   props: {
     start: {
-      type: Object,
+      required: true,
     },
     end: {
-      type: Object,
+      required: true,
     },
     unit: {
       type: String,
@@ -22,56 +33,80 @@ export default {
       type: String,
       default: "months",
     },
+    styleCell: {
+      type: Object,
+    },
   },
   computed: {
-    getBlocks() {
-      let numBlocks = 1;
-      let blocks = [];
-      let startOf = moment(this.start).startOf(this.zoom.slice(0, -1)); // around time
-      let endOf = moment(this.end).endOf(this.zoom.slice(0, -1)); // around time
-      let diffZoom = endOf.diff(startOf, this.zoom);
+    getCalendarList() {
+      let calendarList = [];
+      let numItem = 1;
 
-      if (this.end > this.start) {
-        numBlocks = diffZoom + 1;
+      if (!this.start || !this.end) {
+        return calendarList;
       }
 
-      if (this.zoom == "months") {
-        moment().startOf("day");
-      }
+      // around time start & time end
+      let startOf = moment(this.start).startOf(this.zoom.slice(0, -1));
+      let endOf = moment(this.end).endOf(this.zoom.slice(0, -1));
+      numItem = endOf.diff(startOf, this.zoom) + 1;
 
-      for (let i = 0; i < numBlocks; i++) {
-        let temp = startOf.add(i, this.zoom);
-        let cols = 0;
-        let block = {
-          id: "calendar-item-block-" + i,
+      // console.log("--> start: ", moment(this.start).format("YYYY-MM-DD"));
+      // console.log("--> end: ", moment(this.end).format("YYYY-MM-DD"));
+      // console.log("--> startOf: ", moment(startOf).format("YYYY-MM-DD"));
+      // console.log("--> endOf: ", moment(endOf).format("YYYY-MM-DD"));
+      // console.log("--> columns: ", this.end.diff(this.start, this.unit) + 1);
+
+      for (let i = 0; i < numItem; i++) {
+        let startOfNext = moment(startOf).add(i, this.zoom); // start time of next calendar
+        let startCol = 0;
+        let endCol = 0;
+        let calendarItem = {
+          id: "calendar-item-" + i,
+          blocks: [],
+          time: moment(startOfNext).format("YYYY/MM"),
         };
 
-        if (numBlocks === 1) {
-          cols = this.end.diff(this.start, this.unit);
+        if (numItem === 1) {
+          startCol = moment(this.start).get("date");
+          endCol = this.end.diff(this.start, this.unit);
         } else {
-          if (this.zoom == "months") {
-            if (i === 0) {
-              cols =
-                moment(temp).daysInMonth() -
-                startOf.diff(this.start, this.zoom);
-            } else if (i === numBlocks - 1) {
-              cols =
-                moment(temp).daysInMonth() - endOf.diff(this.end, this.zoom);
-            }
+          if (i === 0) {
+            let diffStart = startOf.diff(this.start, this.zoom); // diff start with around start
+            calendarItem.time = diffStart === 0 ? calendarItem.time : "";
+            startCol = moment(this.start).get("date");
+            endCol = moment(startOfNext).daysInMonth() - diffStart;
+          } else if (i === numItem - 1) {
+            startCol = 1;
+            endCol = moment(this.end).get("date");
+          } else {
+            startCol = 1;
+            endCol = moment(startOfNext).daysInMonth();
           }
         }
 
-        block.cols = cols;
-        blocks.push(block);
+        for (let j = startCol; j < endCol + 1; j++) {
+          let col = {
+            id: "col-" + j,
+            name: j,
+          };
+          calendarItem.blocks.push(col);
+        }
+
+        calendarList.push(calendarItem);
       }
 
-      console.log("Blocks ", blocks);
+      // console.log(calendarList);
 
-      return blocks;
+      return calendarList;
     },
   },
 };
 </script>
 
 <style scoped>
+.gantt__calendar {
+  height: 100%;
+  display: flex;
+}
 </style>

@@ -14,15 +14,15 @@ export default {
     getMaxTimeEnd: state => {
       if (state.orderList.length > 0) {
         return state.orderList.reduce((max, cur) => {
-          return max.endAt > cur.endAt ? max.endAt : cur.endAt;
-        });
+          return max > cur.endAt ? max : cur.endAt;
+        }, state.orderList[0].endAt);
       }
     },
     getMinTimeStart: state => {
       if (state.orderList.length > 0) {
         return state.orderList.reduce((min, cur) => {
-          return min.startAt < cur.startAt ? min.startAt : cur.startAt;
-        });
+          return min < cur.startAt ? min : cur.startAt;
+        }, state.orderList[0].startAt);
       }
     }
   },

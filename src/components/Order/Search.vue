@@ -55,7 +55,7 @@ export default {
 
 .order-search__input__main input {
   height: 100%;
-  width: 120px;
+  width: 50%;
   max-width: 120px;
   padding-left: 6px;
   padding-right: 6px;

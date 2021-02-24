@@ -1,14 +1,5 @@
 <template>
   <div class="gantt">
-    <div id="calendar" class="gantt__calendar">
-      <calendar-list
-        :start="getMinTimeStart"
-        :end="getMaxTimeEnd"
-        :unit="unit"
-        :zoom="zoom"
-        :styleCell="{ width: width + 'px' }"
-      ></calendar-list>
-    </div>
     <div class="gantt__chart-list">
       <machine-list
         :styleLabel="{
@@ -17,15 +8,27 @@
         }"
       ></machine-list>
     </div>
-    <div id="timeline" class="gantt__chart-timeline">
-      <timeline-list
-        :start="getMinTimeStart"
-        :end="getMaxTimeEnd"
-        :unit="unit"
-        :zoom="zoom"
-        :styleCell="{ width: width + 'px', height: height + 'px' }"
-        :styleBlock="{ height: height + 'px' }"
-      ></timeline-list>
+    <div class="gantt__wrapper">
+      <div class="gantt__calendar">
+        <calendar-list
+          :start="getMinTimeStart"
+          :end="getMaxTimeEnd"
+          :unit="unit"
+          :zoom="zoom"
+          :styleCell="{ width: width + 'px' }"
+        ></calendar-list>
+      </div>
+
+      <div class="gantt__chart-timeline">
+        <timeline-list
+          :start="getMinTimeStart"
+          :end="getMaxTimeEnd"
+          :unit="unit"
+          :zoom="zoom"
+          :styleCell="{ width: width + 'px', height: height + 'px' }"
+          :styleBlock="{ height: height + 'px' }"
+        ></timeline-list>
+      </div>
     </div>
   </div>
 </template>
@@ -74,44 +77,30 @@ export default {
   grid-template-rows: 60px auto;
 }
 
+.gantt__wrapper {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  grid-column: 2 / 3;
+  grid-row: 1 / 3;
+  display: grid;
+  grid-template-rows: 60px auto;
+}
+
 .gantt__calendar {
   font-size: 12px;
-  grid-column: 2 / 3;
   grid-row: 1 / 2;
-  overflow-y: hidden;
 }
 
 .gantt__chart-list {
+  height: 100%;
+  overflow: hidden;
   grid-column: 1 / 2;
   grid-row: 2 / 3;
-  overflow: hidden;
 }
 
 .gantt__chart-timeline {
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
   grid-row: 2 / 3;
-}
-
-/*  Scroll*/
-#timeline::-webkit-scrollbar {
-  background: red;
-  width: 12px;
-}
-
-/* Track Scroll*/
-#timeline::-webkit-scrollbar-track {
-  background: #454e59;
-}
-/* Handle Scroll*/
-#timeline::-webkit-scrollbar-thumb {
-  height: 150px;
-  background: #8395a7;
-}
-
-#timeline::-webkit-scrollbar-thumb:window-inactive {
-  background: #8395a7;
+  /* overflow-y: scroll; */
 }
 </style>

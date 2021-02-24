@@ -1,30 +1,22 @@
 <template>
   <div class="gantt">
-    <div id="calendar" class="gantt__calendar">
+    <div class="gantt__calendar">
       <calendar-list
-        :start="getMinTimeStart"
+        :start="this.getMinTimeStart"
         :end="getMaxTimeEnd"
         :unit="unit"
         :zoom="zoom"
-        :styleCell="{ width: width + 'px' }"
       ></calendar-list>
     </div>
     <div class="gantt__chart-list">
-      <machine-list
-        :styleLabel="{
-          minHeight: height * 2 + 'px',
-          height: height * 2 + 'px',
-        }"
-      ></machine-list>
+      <machine-list></machine-list>
     </div>
-    <div id="timeline" class="gantt__chart-timeline">
+    <div class="gantt__chart-timeline">
       <timeline-list
-        :start="getMinTimeStart"
+        :start="this.getMinTimeStart"
         :end="getMaxTimeEnd"
         :unit="unit"
         :zoom="zoom"
-        :styleCell="{ width: width + 'px', height: height + 'px' }"
-        :styleBlock="{ height: height + 'px' }"
       ></timeline-list>
     </div>
   </div>
@@ -32,11 +24,11 @@
 
 <script>
 import { mapGetters } from "vuex";
+import moment from "moment";
 import { MACHINE_GET_LIST } from "../../store/contants/actionTypes";
 import TimelineList from "./Timeline/List";
 import CalendarList from "./Calendar/List";
 import MachineList from "./Machine/List";
-
 export default {
   name: "gantt",
   components: {
@@ -45,14 +37,35 @@ export default {
     MachineList,
   },
   computed: {
-    ...mapGetters(["getMinTimeStart", "getMaxTimeEnd"]),
+    ...mapGetters([
+      "getMachineList",
+      "getOrderList",
+      "getMaxTimeEnd",
+      "getMinTimeStart",
+    ]),
+    getTimelineList() {
+      let arrMachine = this.getMachineList;
+      let arrOrder = this.getOrderList;
+      let arrResult = [];
+      if (arrMachine.length > 0 && arrOrder.length > 0) {
+        arrResult = arrMachine.map((machine) => {
+          let arrTimeline = arrOrder.filter(
+            (order) => order.machine_code === machine.code
+          );
+          return {
+            id: machine.id,
+            code: machine.code,
+            timeline: arrTimeline,
+          };
+        });
+      }
+      return arrResult;
+    },
   },
   data() {
     return {
       unit: "days",
       zoom: "months",
-      width: 30,
-      height: 45,
     };
   },
   async created() {
@@ -69,49 +82,21 @@ export default {
 .gantt {
   width: 100%;
   height: 100%;
+  overflow: scroll;
   display: grid;
-  grid-template-columns: 250px auto;
+  grid-template-columns: 30% 70%;
   grid-template-rows: 60px auto;
 }
-
 .gantt__calendar {
-  font-size: 12px;
   grid-column: 2 / 3;
   grid-row: 1 / 2;
-  overflow-y: hidden;
 }
-
 .gantt__chart-list {
   grid-column: 1 / 2;
   grid-row: 2 / 3;
-  overflow: hidden;
 }
-
 .gantt__chart-timeline {
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  grid-column: 2 / 3;
   grid-row: 2 / 3;
-}
-
-/*  Scroll*/
-#timeline::-webkit-scrollbar {
-  background: red;
-  width: 12px;
-}
-
-/* Track Scroll*/
-#timeline::-webkit-scrollbar-track {
-  background: #454e59;
-}
-/* Handle Scroll*/
-#timeline::-webkit-scrollbar-thumb {
-  height: 150px;
-  background: #8395a7;
-}
-
-#timeline::-webkit-scrollbar-thumb:window-inactive {
-  background: #8395a7;
 }
 </style>

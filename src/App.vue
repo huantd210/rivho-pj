@@ -4,12 +4,14 @@
       <el-header></el-header>
     </header>
     <main class="app__main">
-      <aside class="app__main__left">
-        <order></order>
-      </aside>
-      <section class="app__main__right">
-        <gantt></gantt>
-      </section>
+      <div class="app__main__wrapper">
+        <aside class="app__main__left">
+          <order></order>
+        </aside>
+        <section class="app__main__right">
+          <gantt></gantt>
+        </section>
+      </div>
     </main>
     <main></main>
   </div>
@@ -62,6 +64,7 @@ export default {
   font-size: 16px;
   background-color: #222f3e;
   color: #ffffff;
+  overflow: hidden;
 }
 
 .app__header {
@@ -70,22 +73,49 @@ export default {
 
 .app__main {
   height: 90vh;
+  width: 100vw;
   padding: 8px 12px;
-  display: flex;
+}
+
+.app__main__wrapper {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 20% 80%;
+  grid-template-rows: 100%;
 }
 
 .app__main__left {
   margin-right: 10px;
   padding-top: 24px;
   padding-left: 8px;
-  flex: 1 1 20%;
   background-color: #576574;
+  grid-column: 1 / 2;
 }
 
 .app__main__right {
   padding-left: 8px;
   padding-top: 2px;
-  flex: 1 1 80%;
   background-color: #576574;
+  grid-column: 2 / 3;
+}
+
+/* Scroll */
+::-webkit-scrollbar {
+  background: #454e59;
+  width: 12px;
+}
+
+/* Track Scroll */
+::-webkit-scrollbar-track {
+  background: #454e59;
+}
+/* Handle Scroll */
+::-webkit-scrollbar-thumb {
+  height: 150px;
+  background: #8395a7;
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: #8395a7;
 }
 </style>

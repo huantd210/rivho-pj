@@ -1,6 +1,11 @@
 <template>
   <div class="gantt__machine-list">
-    <item v-for="item in getMachineList" :key="item.id" :machine="item"></item>
+    <item
+      v-for="item in getMachineList"
+      :key="item.id"
+      :machine="item"
+      :style="styleLabel"
+    ></item>
   </div>
 </template>
 
@@ -19,6 +24,9 @@ export default {
       default: function () {
         return [];
       },
+    },
+    styleLabel: {
+      type: Object,
     },
   },
   computed: {

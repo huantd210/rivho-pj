@@ -44,8 +44,7 @@ export default {
   padding-top: 1px;
   padding-left: 8px;
   padding-bottom: 1px;
-  height: 90px;
-  margin-bottom: 3px;
+  margin-bottom: 1px;
   border-top-left-radius: 6px;
   border-bottom-left-radius: 6px;
   background-color: #218c74;
