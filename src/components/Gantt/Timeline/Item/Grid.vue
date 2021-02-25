@@ -1,17 +1,18 @@
 <template>
   <div class="gantt__timeline-item__grid" :style="gridStyle">
     <div
-      v-for="index in cols"
+      v-for="index in columns"
       :key="'row-top-' + index"
       class="gantt__timeline-item__grid__cell--non"
-      :style="blockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 })"
+      :style="getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 })"
     ></div>
+
     <div
-      v-for="index in cols"
+      v-for="index in columns"
       :key="'row-bottom-' + index"
       class="gantt__timeline-item__grid__cell--non"
       :style="{
-        ...blockGridPosition({ x: index, y: index + 1 }, { x: 2, y: 3 }),
+        ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 2, y: 3 }),
         ...styleCell,
       }"
     ></div>
@@ -22,8 +23,9 @@
       :block="item"
       class="gantt__timeline-item__grid__cell--has"
       :style="{
-        ...blockGridPosition(item.gridCol, item.gridRow),
         ...styleBlock,
+        ...getBlockGridPosition(item.gridCol, item.gridRow),
+        ...item.blockStyleCustom,
       }"
     ></item-block>
   </div>
@@ -41,7 +43,7 @@ export default {
     timeline: {
       type: Object,
     },
-    cols: {
+    columns: {
       type: Number,
       default: 0,
     },
@@ -55,13 +57,13 @@ export default {
   computed: {
     gridStyle() {
       return {
-        gridTemplateColumns: `repeat(${this.cols}, ${this.styleCell.width})`,
+        gridTemplateColumns: `repeat(${this.columns}, ${this.styleCell.width})`,
         gridTemplateRows: `repeat(2, ${this.styleCell.height}`,
       };
     },
   },
   methods: {
-    blockGridPosition(column = { x: 1, y: 2 }, row = { x: 1, y: 2 }) {
+    getBlockGridPosition(column = { x: 1, y: 2 }, row = { x: 1, y: 2 }) {
       return {
         gridColumn: `${column.x} / ${column.y}`,
         gridRow: `${row.x} / ${row.y}`,

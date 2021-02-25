@@ -31,9 +31,6 @@ export default {
   props: {
     machine: {
       type: Object,
-      default: function () {
-        return {};
-      },
     },
   },
 };

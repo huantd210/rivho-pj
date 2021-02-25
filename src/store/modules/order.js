@@ -1,31 +1,24 @@
 import moment from "moment";
 import _ from "lodash";
-import { ORDER_GET_LIST } from "../contants/actionTypes";
+import { ORDER_GET_LIST, ORDER_FILTER } from "../contants/actionTypes";
 import axios from "../../config/axios";
 
 export default {
+  namespaced: true,
   state: () => {
     return {
-      orderList: []
+      orderList: [],
+      orderFilter: ""
     };
   },
   getters: {
     getOrderList: state => state.orderList,
-    getOrderListByDate: state => date => {
-      if (date) {
-        return state.orderList.filter(
-          order =>
-            moment(order.startAt.format("YYYY-MM-DD")).isSame(date) ||
-            moment(order.endAt.format("YYYY-MM-DD")).isSame(date)
-        );
-      }
-
-      return state.orderList;
-    }
+    getOrderFilter: state => state.orderFilter
   },
   mutations: {
     [ORDER_GET_LIST](state, payload) {
       state.orderList = payload.orderList;
+      state.orderFilter = payload.orderFilter;
     }
   },
   actions: {
@@ -34,20 +27,51 @@ export default {
         try {
           const result = await axios.get("orders");
           if (result.data.length > 0) {
-            let orderList = result.data.map(item => {
-              return {
-                id: item.id,
-                name: item.name,
-                describe: item.describe,
-                color: item.color,
-                startAt: moment(item.start_at),
-                endAt: moment(item.end_at),
-                machineCode: item.machine_code
+            let orderList = result.data.reduce((arrOrder, curOrder) => {
+              // get all if filter is null
+              let orderItem = {
+                id: curOrder.id,
+                name: curOrder.name,
+                describe: curOrder.describe,
+                color: curOrder.color,
+                startAt: moment(
+                  moment(new Date(curOrder.start_at)).format(
+                    "YYYY-MM-DD HH:MM:SS"
+                  )
+                ),
+                endAt: moment(
+                  moment(new Date(curOrder.end_at)).format(
+                    "YYYY-MM-DD HH:MM:SS"
+                  )
+                ),
+                machineCode: curOrder.machine_code
               };
-            });
+
+              if (payload && payload.filter && payload.filter.date) {
+                let orderStart = moment(orderItem.startAt.format("YYYY-MM-DD"));
+                let orderEnd = moment(orderItem.endAt.format("YYYY-MM-DD"));
+                payload.filter.date = moment(
+                  moment(payload.filter.date).format("YYYY-MM-DD")
+                );
+
+                if (
+                  orderStart.isSame(payload.filter.date) ||
+                  orderEnd.isSame(payload.filter.date) ||
+                  (orderStart.isBefore(payload.filter.date) &&
+                    orderEnd.isAfter(payload.filter.date))
+                ) {
+                  arrOrder.push(orderItem);
+                }
+              } else {
+                arrOrder.push(orderItem);
+              }
+
+              return arrOrder;
+            }, []);
 
             context.commit(ORDER_GET_LIST, {
-              orderList
+              orderList,
+              orderFilter: payload.filter
             });
           }
         } catch (error) {

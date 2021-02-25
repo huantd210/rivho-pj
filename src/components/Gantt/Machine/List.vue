@@ -21,16 +21,13 @@ export default {
   props: {
     machines: {
       type: Array,
-      default: function () {
-        return [];
-      },
     },
     styleLabel: {
       type: Object,
     },
   },
   computed: {
-    ...mapGetters(["getMachineList"]),
+    ...mapGetters("machine", ["getMachineList"]),
   },
 };
 </script>

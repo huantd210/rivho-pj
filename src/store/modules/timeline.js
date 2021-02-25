@@ -3,6 +3,7 @@ import _ from "lodash";
 import { TIMELINE_GET_LIST } from "../contants/actionTypes";
 
 export default {
+  namespaced: true,
   state: () => {
     return {
       timelineList: []
@@ -11,7 +12,6 @@ export default {
   getters: {
     getTimelineList: state => state.timelineList,
     getTimelineStart: state => {
-      console.log("timelineList", state.timelineList);
       if (state.timelineList.length > 0) {
         return state.timelineList.reduce((max, cur) => {
           return max > cur.endAt ? max : cur.endAt;
@@ -19,7 +19,6 @@ export default {
       }
     },
     getTimelineEnd: state => {
-      console.log("timelineList", state.timelineList);
       if (state.timelineList.length > 0) {
         return state.timelineList.reduce((min, cur) => {
           return min < cur.startAt ? min : cur.startAt;
@@ -33,11 +32,14 @@ export default {
     }
   },
   actions: {
-    [TIMELINE_GET_LIST](context, payload) {
-      let machineList = context.getters.getMachineList;
-      let orderList = context.getters.getOrderListByDate();
+    async [TIMELINE_GET_LIST](context, payload) {
+      const { rootGetters } = context;
+      let machineList = rootGetters["machine/getMachineList"];
+      let orderList = rootGetters["order/getOrderList"];
 
-      console.log("orderList", orderList);
+      console.log("A", rootGetters["machine/getMachineList"]);
+      console.log("B", rootGetters["order/getOrderList"]);
+
       let timelineList = [];
 
       if (machineList.length > 0 && orderList.length > 0) {

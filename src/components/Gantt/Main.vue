@@ -7,10 +7,11 @@
       @scroll.passive="handleCalendarScroll"
     >
       <calendar-list
-        :start="getTimelineStart"
-        :end="getTimelineEnd"
-        :unit="unit"
-        :zoom="zoom"
+        :start="start"
+        :end="end"
+        :min="start"
+        :max="end"
+        :slice="slice"
         :styleCell="{ width: width + 'px' }"
       ></calendar-list>
     </div>
@@ -29,10 +30,12 @@
       @scroll.passive="handleTimelineScroll"
     >
       <timeline-list
-        :start="getTimelineStart"
-        :end="getTimelineEnd"
-        :unit="unit"
-        :zoom="zoom"
+        :start="start"
+        :end="end"
+        :min="0"
+        :max="(this.end - this.start) * this.slice"
+        :width="width"
+        :height="height"
         :styleCell="{ width: width + 'px', height: height + 'px' }"
         :styleBlock="{ height: height + 'px' }"
       ></timeline-list>
@@ -41,7 +44,6 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 import { MACHINE_GET_LIST } from "../../store/contants/actionTypes";
 import TimelineList from "./Timeline/List";
 import CalendarList from "./Calendar/List";
@@ -53,9 +55,6 @@ export default {
     TimelineList,
     CalendarList,
     MachineList,
-  },
-  computed: {
-    ...mapGetters(["getTimelineStart", "getTimelineEnd"]),
   },
   methods: {
     handleTimelineScroll(event) {
@@ -69,15 +68,16 @@ export default {
   },
   data() {
     return {
-      unit: "days",
-      zoom: "months",
+      start: 9, // start at 9 AM
+      end: 21, // end at 9 PM
+      slice: 4, // slice 1/4 hour
       width: 30,
       height: 45,
     };
   },
   async created() {
     try {
-      await this.$store.dispatch(MACHINE_GET_LIST);
+      await this.$store.dispatch(`machine/${MACHINE_GET_LIST}`);
     } catch (error) {
       console.error(error);
     }

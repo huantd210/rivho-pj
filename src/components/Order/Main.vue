@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import { ORDER_GET_LIST } from "../../store/contants/actionTypes";
 import OrderSearch from "../Order/Search";
 import OrderList from "../Order/List";
 
@@ -15,13 +14,6 @@ export default {
   components: {
     OrderSearch,
     OrderList,
-  },
-  async created() {
-    try {
-      await this.$store.dispatch(ORDER_GET_LIST);
-    } catch (error) {
-      console.error(error);
-    }
   },
 };
 </script>

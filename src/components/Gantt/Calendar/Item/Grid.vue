@@ -2,7 +2,7 @@
   <div class="gantt__calendar-item__grid">
     <div class="gantt__calendar-item__grid__wrapper">
       <div class="gantt__calendar-item__grid__top">
-        <span>{{ calendar.time }}</span>
+        <span>{{ calendar.time }}時 </span>
       </div>
       <div class="gantt__calendar-item__grid__bottom" :style="gridStyle">
         <item-block
@@ -10,7 +10,7 @@
           :key="item.id"
           :block="item"
           :style="
-            blockGridPosition({ x: index + 1, y: index + 2 }, { x: 1, y: 2 })
+            getBlockGridPosition({ x: index + 1, y: index + 2 }, { x: 1, y: 2 })
           "
         >
         </item-block>
@@ -39,12 +39,12 @@ export default {
   computed: {
     gridStyle() {
       return {
-        gridTemplateColumns: `repeat(${this.calendar.cols}, ${this.styleCell.width})`,
+        gridTemplateColumns: `repeat(${this.calendar.blocks.length}, ${this.styleCell.width})`,
       };
     },
   },
   methods: {
-    blockGridPosition(column = { x: 1, y: 2 }, row = { x: 1, y: 2 }) {
+    getBlockGridPosition(column = { x: 1, y: 2 }, row = { x: 1, y: 2 }) {
       return {
         ...this.styleCell,
         gridColumn: `${column.x} / ${column.y}`,
@@ -62,15 +62,27 @@ export default {
 
 .gantt__calendar-item__grid__wrapper {
   height: 100%;
+  background-color: #feca57;
+  border-left: 1px solid #222f3e;
+  border-bottom: 1px solid #222f3e;
+  display: grid;
+  grid-auto-rows: 50% 50%;
 }
 
 .gantt__calendar-item__grid__top {
-  padding-top: 3px;
-  padding-bottom: 3px;
-  text-align: left;
+  text-align: center;
+  grid-row: 1 / 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gantt__calendar-item__grid__top span {
+  font-size: 14px;
 }
 
 .gantt__calendar-item__grid__bottom {
+  grid-row: 2 / 3;
   display: grid;
 }
 </style>

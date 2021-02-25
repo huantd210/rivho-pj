@@ -20,7 +20,7 @@ export default {
     "el-button": Button,
   },
   computed: {
-    ...mapGetters(["getOrderList"]),
+    ...mapGetters("order", ["getOrderList"]),
   },
 };
 </script>

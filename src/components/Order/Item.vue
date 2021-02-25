@@ -7,7 +7,8 @@
       <div class="order-item__describe">
         <span>{{ order.name }}</span>
         <span>{{ order.describe }}</span>
-        <span>{{ order.startAt }}</span>
+        <span>{{ order.startAt.format("YYYY-DD-MM HH:MM:SS") }}</span>
+        <span>{{ order.endAt.format("YYYY-DD-MM HH:MM:SS") }}</span>
       </div>
       <div class="order-item__action">
         <el-button :style="{ padding: 0, 'background-color': 'transparent' }">

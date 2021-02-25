@@ -2,6 +2,7 @@ import { MACHINE_GET_LIST } from "../contants/actionTypes";
 import axios from "../../config/axios";
 
 export default {
+  namespaced: true,
   state: () => {
     return {
       machineList: []

@@ -26,6 +26,7 @@ import {
   faPlayCircle,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
+
 import TopBar from "./components/TopBar/Main";
 import Order from "./components/Order/Main";
 import Gantt from "./components/Gantt/Main";
@@ -89,7 +90,7 @@ export default {
 
 .app__main__right {
   padding-left: 8px;
-  padding-top: 2px;
+  padding-top: 1px;
   background-color: #576574;
   grid-column: 2 / 3;
 }

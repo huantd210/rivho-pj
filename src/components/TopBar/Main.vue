@@ -19,8 +19,9 @@
 </template>
 
 <script>
+import moment from "moment";
 import Button from "../UI/Button";
-import { TIMELINE_GET_LIST } from "../../store/contants/actionTypes";
+import { ORDER_GET_LIST } from "../../store/contants/actionTypes";
 
 export default {
   name: "top-bar",
@@ -30,17 +31,25 @@ export default {
   methods: {
     handleInputdateFilter() {
       if (this.dateFilter) {
-        this.$store.dispatch(TIMELINE_GET_LIST, {
-          dateFilter: new Date(this.dateFilter),
+        this.$store.dispatch(`order/${ORDER_GET_LIST}`, {
+          filter: {
+            date: new Date(this.dateFilter),
+          },
         });
       }
     },
   },
   data() {
-    return { dateFilter: new Date(Date.now()) };
+    return { dateFilter: moment().format("YYYY-MM-DD") };
   },
-  created() {
-    this.handleInputdateFilter();
+  async created() {
+    if (this.dateFilter) {
+      await this.$store.dispatch(`order/${ORDER_GET_LIST}`, {
+        filter: {
+          date: new Date(this.dateFilter),
+        },
+      });
+    }
   },
 };
 </script>
