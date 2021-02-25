@@ -1,15 +1,20 @@
 <template>
   <div class="gantt">
-    <div id="calendar" class="gantt__calendar">
+    <div
+      id="calendar"
+      ref="ganttCalendar"
+      class="gantt__calendar"
+      @scroll.passive="handleCalendarScroll"
+    >
       <calendar-list
-        :start="getMinTimeStart"
-        :end="getMaxTimeEnd"
+        :start="getTimelineStart"
+        :end="getTimelineEnd"
         :unit="unit"
         :zoom="zoom"
         :styleCell="{ width: width + 'px' }"
       ></calendar-list>
     </div>
-    <div class="gantt__chart-list">
+    <div id="chart-list" ref="ganttChartList" class="gantt__chart-list">
       <machine-list
         :styleLabel="{
           minHeight: height * 2 + 'px',
@@ -17,10 +22,15 @@
         }"
       ></machine-list>
     </div>
-    <div id="timeline" class="gantt__chart-timeline">
+    <div
+      id="chart-timeline"
+      ref="ganttChartTimeline"
+      class="gantt__chart-timeline"
+      @scroll.passive="handleTimelineScroll"
+    >
       <timeline-list
-        :start="getMinTimeStart"
-        :end="getMaxTimeEnd"
+        :start="getTimelineStart"
+        :end="getTimelineEnd"
         :unit="unit"
         :zoom="zoom"
         :styleCell="{ width: width + 'px', height: height + 'px' }"
@@ -45,7 +55,17 @@ export default {
     MachineList,
   },
   computed: {
-    ...mapGetters(["getMinTimeStart", "getMaxTimeEnd"]),
+    ...mapGetters(["getTimelineStart", "getTimelineEnd"]),
+  },
+  methods: {
+    handleTimelineScroll(event) {
+      let elChartList = this.$refs.ganttChartList;
+      elChartList.scrollTop = event.target.scrollTop;
+    },
+    handleCalendarScroll(event) {
+      let elChartTimeline = this.$refs.ganttChartTimeline;
+      elChartTimeline.scrollLeft = event.target.scrollLeft;
+    },
   },
   data() {
     return {
@@ -78,6 +98,7 @@ export default {
   font-size: 12px;
   grid-column: 2 / 3;
   grid-row: 1 / 2;
+  overflow-x: scroll;
   overflow-y: hidden;
 }
 
@@ -96,22 +117,22 @@ export default {
 }
 
 /*  Scroll*/
-#timeline::-webkit-scrollbar {
+#chart-timeline::-webkit-scrollbar {
   background: red;
   width: 12px;
 }
 
 /* Track Scroll*/
-#timeline::-webkit-scrollbar-track {
+#chart-timeline::-webkit-scrollbar-track {
   background: #454e59;
 }
 /* Handle Scroll*/
-#timeline::-webkit-scrollbar-thumb {
+#chart-timeline::-webkit-scrollbar-thumb {
   height: 150px;
   background: #8395a7;
 }
 
-#timeline::-webkit-scrollbar-thumb:window-inactive {
+#chart-timeline::-webkit-scrollbar-thumb:window-inactive {
   background: #8395a7;
 }
 </style>

@@ -44,50 +44,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["getMachineList", "getOrderList"]),
-    getTimelineList() {
-      let machineList = this.getMachineList;
-      let orderList = this.getOrderList;
-      let timelineList = [];
-
-      if (machineList.length > 0 && orderList.length > 0) {
-        timelineList = machineList.map((machine) => {
-          let machineItem = {
-            id: machine.id,
-            code: machine.code,
-            blocks: [],
-          };
-
-          machineItem.blocks = orderList.reduce((arrOrder, curOrder) => {
-            if (curOrder.machineCode === machine.code) {
-              let gridCol = { x: 1, y: 2 };
-              let gridRow = { x: 1, y: 2 };
-
-              gridCol.x = curOrder.startAt.diff(this.start, this.unit);
-              gridCol.y =
-                gridCol.x + curOrder.endAt.diff(curOrder.startAt, this.unit);
-
-              let orderItem = {
-                ...curOrder,
-                startAt: moment(curOrder.startAt).format("YYYY-MM-DD"),
-                endAt: moment(curOrder.endAt).format("YYYY-MM-DD"),
-                gridCol,
-                gridRow,
-              };
-
-              arrOrder.push(orderItem);
-            }
-
-            return arrOrder;
-          }, []);
-
-          return machineItem;
-        });
-      }
-      // console.log(timelineList);
-
-      return timelineList;
-    },
+    ...mapGetters(["getMachineList", "getOrderList", "getTimelineList"]),
     getColsTimeline() {
       let start = moment(this.start);
       let end = moment(this.end);

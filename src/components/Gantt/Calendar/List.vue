@@ -1,5 +1,5 @@
 <template>
-  <div class="gantt__calendar">
+  <div class="gantt__calendar-list">
     <item-grid
       v-for="item in getCalendarList"
       :key="item.id"
@@ -14,7 +14,7 @@ import moment from "moment";
 import ItemGrid from "./Item/Grid";
 
 export default {
-  name: "gantt-calendar",
+  name: "gantt-calendar-list",
   components: {
     ItemGrid,
   },
@@ -51,11 +51,11 @@ export default {
       let endOf = moment(this.end).endOf(this.zoom.slice(0, -1));
       numItem = endOf.diff(startOf, this.zoom) + 1;
 
-      // console.log("--> start: ", moment(this.start).format("YYYY-MM-DD"));
-      // console.log("--> end: ", moment(this.end).format("YYYY-MM-DD"));
-      // console.log("--> startOf: ", moment(startOf).format("YYYY-MM-DD"));
-      // console.log("--> endOf: ", moment(endOf).format("YYYY-MM-DD"));
-      // console.log("--> columns: ", this.end.diff(this.start, this.unit) + 1);
+      console.log("--> start: ", moment(this.start).format("YYYY-MM-DD"));
+      console.log("--> end: ", moment(this.end).format("YYYY-MM-DD"));
+      console.log("--> startOf: ", moment(startOf).format("YYYY-MM-DD"));
+      console.log("--> endOf: ", moment(endOf).format("YYYY-MM-DD"));
+      console.log("--> columns: ", this.end.diff(this.start, this.unit) + 1);
 
       for (let i = 0; i < numItem; i++) {
         let startOfNext = moment(startOf).add(i, this.zoom); // start time of next calendar
@@ -105,7 +105,7 @@ export default {
 </script>
 
 <style scoped>
-.gantt__calendar {
+.gantt__calendar-list {
   height: 100%;
   display: flex;
 }

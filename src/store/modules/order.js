@@ -11,19 +11,16 @@ export default {
   },
   getters: {
     getOrderList: state => state.orderList,
-    getMaxTimeEnd: state => {
-      if (state.orderList.length > 0) {
-        return state.orderList.reduce((max, cur) => {
-          return max > cur.endAt ? max : cur.endAt;
-        }, state.orderList[0].endAt);
+    getOrderListByDate: state => date => {
+      if (date) {
+        return state.orderList.filter(
+          order =>
+            moment(order.startAt.format("YYYY-MM-DD")).isSame(date) ||
+            moment(order.endAt.format("YYYY-MM-DD")).isSame(date)
+        );
       }
-    },
-    getMinTimeStart: state => {
-      if (state.orderList.length > 0) {
-        return state.orderList.reduce((min, cur) => {
-          return min < cur.startAt ? min : cur.startAt;
-        }, state.orderList[0].startAt);
-      }
+
+      return state.orderList;
     }
   },
   mutations: {

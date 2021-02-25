@@ -7,7 +7,7 @@
       <div class="order-item__describe">
         <span>{{ order.name }}</span>
         <span>{{ order.describe }}</span>
-        <span>{{ order.start_at }}</span>
+        <span>{{ order.startAt }}</span>
       </div>
       <div class="order-item__action">
         <el-button :style="{ padding: 0, 'background-color': 'transparent' }">

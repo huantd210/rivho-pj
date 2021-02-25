@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header class="app__header">
-      <el-header></el-header>
+      <top-bar></top-bar>
     </header>
     <main class="app__main">
       <div class="app__main__wrapper">
@@ -26,7 +26,7 @@ import {
   faPlayCircle,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import Header from "./components/Header";
+import TopBar from "./components/TopBar/Main";
 import Order from "./components/Order/Main";
 import Gantt from "./components/Gantt/Main";
 
@@ -35,14 +35,9 @@ library.add(faCog, faListAlt, faPlayCircle, faPencilAlt, faSearch);
 export default {
   name: "app",
   components: {
-    "el-header": Header,
+    TopBar,
     Order,
     Gantt,
-  },
-  data() {
-    return {
-      msg: "Welcome to Your Vue.js App",
-    };
   },
 };
 </script>
@@ -64,7 +59,6 @@ export default {
   font-size: 16px;
   background-color: #222f3e;
   color: #ffffff;
-  overflow: hidden;
 }
 
 .app__header {
