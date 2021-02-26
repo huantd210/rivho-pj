@@ -13,20 +13,25 @@
         v-model="dateFilter"
         @change="handleInputdateFilter"
       />
-      <el-button>Create</el-button>
+      <el-button @click="showModal = true">Create</el-button>
     </div>
+    <el-modal v-if="showModal" @close="showModal = false">
+      <p slot="body">Create New Order</p>
+    </el-modal>
   </div>
 </template>
 
 <script>
 import moment from "moment";
 import Button from "../UI/Button";
+import Modal from "../UI/Modal";
 import { ORDER_GET_LIST } from "../../store/contants/actionTypes";
 
 export default {
   name: "top-bar",
   components: {
     "el-button": Button,
+    "el-modal": Modal,
   },
   methods: {
     handleInputdateFilter() {
@@ -40,7 +45,10 @@ export default {
     },
   },
   data() {
-    return { dateFilter: moment().format("YYYY-MM-DD") };
+    return {
+      dateFilter: moment().format("YYYY-MM-DD"),
+      showModal: false,
+    };
   },
   async created() {
     if (this.dateFilter) {

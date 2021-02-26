@@ -1,11 +1,16 @@
 <template>
-  <div class="gantt__calendar-list">
+  <div class="gantt__calendar-list" :style="gridListStyle">
     <item-grid
-      v-for="item in getCalendarList"
+      v-for="(item, index) in getCalendarList"
       :key="item.id"
       :calendar="item"
       :styleCell="styleCell"
+      :styleGrid="gridStyle(index)"
     ></item-grid>
+    <div
+      class="gantt__calendar-list__virtual-scroll"
+      :style="gridVirtualScrollStyle"
+    ></div>
   </div>
 </template>
 
@@ -39,6 +44,14 @@ export default {
       type: Number,
       required: true,
     },
+    width: {
+      type: Number,
+      default: 30,
+    },
+    height: {
+      type: Number,
+      default: 45,
+    },
     styleCell: {
       type: Object,
     },
@@ -49,10 +62,10 @@ export default {
       let calendarBlocksItem = [];
 
       for (let i = 0; i < this.slice; i++) {
-        calendarBlocksItem.push(`${60 / (this.slice - i)}`);
+        calendarBlocksItem.push(`${(60 / this.slice) * (i + 1)}`);
       }
 
-      for (let i = this.min; i <= this.max; i++) {
+      for (let i = this.min; i < this.max; i++) {
         let calendarItem = {
           id: "calendar-item-" + i,
           time: i,
@@ -63,6 +76,27 @@ export default {
       }
       return calendarList;
     },
+    gridListStyle() {
+      return {
+        gridTemplateColumns: `repeat(
+          ${this.end - this.start},
+          ${this.width * this.slice + "px"}
+        ) 14px`,
+      };
+    },
+    gridVirtualScrollStyle() {
+      return {
+        gridColumnStart: this.end - this.start + 1,
+        gridColumnEnd: this.end - this.start + 2,
+      };
+    },
+  },
+  methods: {
+    gridStyle(index) {
+      return {
+        gridColumns: index + 1 + "/" + index + 2,
+      };
+    },
   },
 };
 </script>
@@ -70,6 +104,11 @@ export default {
 <style scoped>
 .gantt__calendar-list {
   height: 100%;
-  display: flex;
+  width: 100%;
+  display: grid;
+}
+
+.gantt__calendar-list__virtual-scroll {
+  background-color: #222f3e;
 }
 </style>

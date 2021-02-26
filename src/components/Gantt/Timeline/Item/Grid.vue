@@ -1,33 +1,62 @@
 <template>
-  <div class="gantt__timeline-item__grid" :style="gridStyle">
+  <div class="gantt__timeline-item__grid">
     <div
-      v-for="index in columns"
-      :key="'row-top-' + index"
-      class="gantt__timeline-item__grid__cell--non"
-      :style="getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 })"
-    ></div>
+      v-if="timeline"
+      class="gantt__timeline-item__grid__wrapper"
+      :style="gridStyle"
+    >
+      <div
+        v-for="index in columns"
+        :key="'row-top-' + index"
+        class="gantt__timeline-item__grid__cell--non"
+        :style="{
+          ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 }),
+          borderBottom: '1px solid #98c6ff',
+        }"
+      ></div>
 
-    <div
-      v-for="index in columns"
-      :key="'row-bottom-' + index"
-      class="gantt__timeline-item__grid__cell--non"
-      :style="{
-        ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 2, y: 3 }),
-        ...styleCell,
-      }"
-    ></div>
+      <div
+        v-for="index in columns"
+        :key="'row-bottom-' + index"
+        class="gantt__timeline-item__grid__cell--non"
+        :style="{
+          ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 2, y: 3 }),
+          ...styleCell,
+        }"
+      ></div>
 
-    <item-block
-      v-for="item in timeline.blocks"
-      :key="item.id"
-      :block="item"
-      class="gantt__timeline-item__grid__cell--has"
-      :style="{
-        ...styleBlock,
-        ...getBlockGridPosition(item.gridCol, item.gridRow),
-        ...item.blockStyleCustom,
-      }"
-    ></item-block>
+      <item-block
+        v-for="item in timeline.blocks"
+        :key="item.id"
+        :block="item"
+        class="gantt__timeline-item__grid__cell--has"
+        :style="{
+          ...styleBlock,
+          ...getBlockGridPosition(item.gridCol, item.gridRow),
+          ...item.blockStyleCustom,
+        }"
+      ></item-block>
+    </div>
+    <div v-else class="gantt__timeline-item__grid__wrapper" :style="gridStyle">
+      <div
+        v-for="index in columns"
+        :key="'row-top-' + index"
+        class="gantt__timeline-item__grid__cell--non"
+        :style="
+          getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 })
+        "
+      ></div>
+
+      <div
+        v-for="index in columns"
+        :key="'row-bottom-' + index"
+        class="gantt__timeline-item__grid__cell--non"
+        :style="{
+          ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 2, y: 3 }),
+          ...styleCell,
+        }"
+      ></div>
+    </div>
   </div>
 </template>
 
@@ -78,6 +107,11 @@ export default {
   margin-bottom: 1px;
   width: 100%;
   height: 100%;
+}
+
+.gantt__timeline-item__grid__wrapper {
+  width: 100%;
+  height: 100%;
   display: grid;
 }
 
@@ -90,7 +124,7 @@ export default {
 }
 
 .gantt__timeline-item__grid__cell--non {
-  border: 1px solid #98c6ff;
+  border-right: 1px solid #98c6ff;
   background-color: #ffffff;
 }
 

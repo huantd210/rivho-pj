@@ -12,6 +12,8 @@
         :min="start"
         :max="end"
         :slice="slice"
+        :width="width"
+        :height="height"
         :styleCell="{ width: width + 'px' }"
       ></calendar-list>
     </div>

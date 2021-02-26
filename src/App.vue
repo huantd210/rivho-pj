@@ -26,7 +26,6 @@ import {
   faPlayCircle,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-
 import TopBar from "./components/TopBar/Main";
 import Order from "./components/Order/Main";
 import Gantt from "./components/Gantt/Main";
@@ -99,6 +98,7 @@ export default {
 ::-webkit-scrollbar {
   background: #454e59;
   width: 12px;
+  height: 12px;
 }
 
 /* Track Scroll */

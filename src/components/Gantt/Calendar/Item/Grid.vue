@@ -1,5 +1,5 @@
 <template>
-  <div class="gantt__calendar-item__grid">
+  <div class="gantt__calendar-item__grid" :style="styleGrid">
     <div class="gantt__calendar-item__grid__wrapper">
       <div class="gantt__calendar-item__grid__top">
         <span>{{ calendar.time }}時 </span>
@@ -35,18 +35,20 @@ export default {
     styleCell: {
       type: Object,
     },
+    styleGrid: {
+      type: Object,
+    },
   },
   computed: {
     gridStyle() {
       return {
-        gridTemplateColumns: `repeat(${this.calendar.blocks.length}, ${this.styleCell.width})`,
+        gridTemplateColumns: `repeat(${this.calendar.blocks.length})`,
       };
     },
   },
   methods: {
     getBlockGridPosition(column = { x: 1, y: 2 }, row = { x: 1, y: 2 }) {
       return {
-        ...this.styleCell,
         gridColumn: `${column.x} / ${column.y}`,
         gridRow: `${row.x} / ${row.y}`,
       };

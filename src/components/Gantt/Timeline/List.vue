@@ -1,13 +1,24 @@
 <template>
   <div class="gantt__timeline-list">
-    <item-grid
-      v-for="item in getTimelineList"
-      :key="item.id"
-      :timeline="item"
-      :columns="max - min"
-      :styleCell="styleCell"
-      :styleBlock="styleBlock"
-    ></item-grid>
+    <div v-if="getTimelineList.length > 0" class="gantt__timeline-wrapper">
+      <item-grid
+        v-for="item in getTimelineList"
+        :key="item.id"
+        :timeline="item"
+        :columns="max - min"
+        :styleCell="styleCell"
+        :styleBlock="styleBlock"
+      ></item-grid>
+    </div>
+    <div v-else class="gantt__timeline-wrapper">
+      <item-grid
+        v-for="item in getMachineList.length"
+        :key="item"
+        :columns="max - min"
+        :styleCell="styleCell"
+        :styleBlock="styleBlock"
+      ></item-grid>
+    </div>
   </div>
 </template>
 
@@ -72,8 +83,8 @@ export default {
           .set("hour", this.end)
           .set("minute", 0);
 
-        console.log("dateStart", dateStart);
-        console.log("dateEnd", dateEnd);
+        // console.log("dateStart", dateStart);
+        // console.log("dateEnd", dateEnd);
 
         timelineList = this.getMachineList.map((machine) => {
           let timelineItem = {
@@ -90,7 +101,6 @@ export default {
 
                 let blockStyleCustom = {
                   position: "relative",
-                  width: this.width,
                   left: "0px",
                 };
 
@@ -173,7 +183,7 @@ export default {
       }
 
       console.log("timelineList ", timelineList);
-      console.log("getOrderFilter ", this.getOrderFilter);
+      // console.log("getOrderFilter ", this.getOrderFilter);
 
       return timelineList;
     },
@@ -181,8 +191,6 @@ export default {
   methods: {
     getGridPointPositionByDate(date) {
       let hourDate = date.get("hour");
-
-      console.log("A");
 
       if (hourDate < this.start) {
         return this.min;
