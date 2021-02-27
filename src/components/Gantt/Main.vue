@@ -24,6 +24,7 @@
           height: height * 2 + 'px',
         }"
       ></machine-list>
+      <div class="gantt__chart-list__virtual-scroll"></div>
     </div>
     <div
       id="chart-timeline"
@@ -61,10 +62,13 @@ export default {
   methods: {
     handleTimelineScroll(event) {
       let elChartList = this.$refs.ganttChartList;
+      let elGanttCalendar = this.$refs.ganttCalendar;
       elChartList.scrollTop = event.target.scrollTop;
+      elGanttCalendar.scrollLeft = event.target.scrollLeft;
     },
     handleCalendarScroll(event) {
       let elChartTimeline = this.$refs.ganttChartTimeline;
+      let elGanttCalendar = this.$refs.ganttCalendar;
       elChartTimeline.scrollLeft = event.target.scrollLeft;
     },
   },
@@ -100,8 +104,7 @@ export default {
   font-size: 12px;
   grid-column: 2 / 3;
   grid-row: 1 / 2;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .gantt__chart-list {
@@ -113,15 +116,20 @@ export default {
 .gantt__chart-timeline {
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: scroll;
   grid-row: 2 / 3;
+}
+
+.gantt__chart-list__virtual-scroll {
+  height: 12px;
+  background-color: #576574;
 }
 
 /*  Scroll*/
 #chart-timeline::-webkit-scrollbar {
   background: red;
   width: 12px;
+  height: 12px;
 }
 
 /* Track Scroll*/

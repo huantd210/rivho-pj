@@ -12,10 +12,10 @@
       </div>
       <div class="order-item__action">
         <el-button :style="{ padding: 0, 'background-color': 'transparent' }">
-          <font-awesome-icon icon="cog"></font-awesome-icon>
+          <i class="el-icon-setting"></i>
         </el-button>
         <el-button :style="{ padding: 0, 'background-color': 'transparent' }">
-          <font-awesome-icon icon="list-alt"></font-awesome-icon>
+          <i class="el-icon-s-fold"></i>
         </el-button>
       </div>
     </div>

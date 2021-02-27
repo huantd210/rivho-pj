@@ -1,10 +1,7 @@
 <template>
   <div class="top-bar">
     <div class="top-bar__brand">
-      <el-button>
-        <font-awesome-icon icon="play-circle" />
-        RIVHO PJ
-      </el-button>
+      <span>RIVHO PJ</span>
     </div>
     <div class="top-bar__navigation">
       <input
@@ -65,6 +62,11 @@ export default {
 <style scoped>
 .top-bar {
   display: flex;
+}
+
+.top-bar__brand span {
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .top-bar__navigation {

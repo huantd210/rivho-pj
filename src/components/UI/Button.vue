@@ -43,6 +43,14 @@ export default {
   --color: #01a3a4;
 }
 
+.btn:hover {
+  opacity: 0.8;
+}
+
+.btn:focus {
+  outline: none;
+}
+
 .btn--disabled {
   cursor: not-allowed;
 }

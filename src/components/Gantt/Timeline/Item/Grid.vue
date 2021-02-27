@@ -107,6 +107,7 @@ export default {
   margin-bottom: 1px;
   width: 100%;
   height: 100%;
+  border-left: 1px solid #222f3e;
 }
 
 .gantt__timeline-item__grid__wrapper {

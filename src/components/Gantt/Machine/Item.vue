@@ -6,9 +6,9 @@
           <span>{{ machine.code }}</span>
         </div>
         <div class="gantt__machine-item__left__action">
-          <el-button :style="{ padding: 0, 'background-color': 'transparent' }"
-            ><font-awesome-icon icon="play-circle"
-          /></el-button>
+          <el-button :style="{ padding: 0, 'background-color': 'transparent' }">
+            <i class="el-icon-video-play"></i>
+          </el-button>
         </div>
         <div class="gantt__machine-item__left__describe"></div>
       </div>

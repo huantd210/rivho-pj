@@ -10,7 +10,7 @@
         :styleBlock="styleBlock"
       ></item-grid>
     </div>
-    <div v-else class="gantt__timeline-wrapper">
+    <div v-else class="gantt__timeline-wrapper--empty">
       <item-grid
         v-for="item in getMachineList.length"
         :key="item"
@@ -182,7 +182,7 @@ export default {
         });
       }
 
-      console.log("timelineList ", timelineList);
+      // console.log("timelineList ", timelineList);
       // console.log("getOrderFilter ", this.getOrderFilter);
 
       return timelineList;

@@ -18,19 +18,9 @@
 </template>
 
 <script>
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faCog,
-  faListAlt,
-  faPencilAlt,
-  faPlayCircle,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
 import TopBar from "./components/TopBar/Main";
 import Order from "./components/Order/Main";
 import Gantt from "./components/Gantt/Main";
-
-library.add(faCog, faListAlt, faPlayCircle, faPencilAlt, faSearch);
 
 export default {
   name: "app",
@@ -75,7 +65,7 @@ export default {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: 25% 75%;
   grid-template-rows: 100%;
 }
 

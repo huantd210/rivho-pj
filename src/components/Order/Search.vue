@@ -6,18 +6,18 @@
     <div class="order-search__right">
       <div class="order-search__input">
         <div class="order-search__input__prefix">
-          <font-awesome-icon
-            icon="pencil-alt"
-            :style="{ color: '#01a3a4', 'font-size': '18px' }"
+          <i
+            class="el-icon-edit"
+            :style="{ color: '#01a3a4', 'font-size': '16px' }"
           />
         </div>
         <div class="order-search__input__main">
-          <input type="text" v-model="terms" />
+          <input type="text" v-model="terms" placeholder="かいたく" />
         </div>
       </div>
       <div class="order-search__action">
-        <el-button>
-          <font-awesome-icon icon="search" />
+        <el-button :style="{ padding: '2px 10px', margin: 0 }">
+          <i class="el-icon-search" />
         </el-button>
       </div>
     </div>
@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-      terms: "かいたく",
+      terms: "",
     };
   },
 };
@@ -42,17 +42,20 @@ export default {
 
 <style scoped>
 .order-search {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
   display: flex;
   justify-content: space-between;
 }
 
 .order-search__left span {
-  font-size: 20px;
+  min-width: 100px;
+  font-size: 16px;
   font-weight: bold;
 }
 
 .order-search__right {
+  padding-left: 12px;
+  padding-right: 6px;
   align-items: center;
   display: flex;
 }
