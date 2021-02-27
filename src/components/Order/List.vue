@@ -20,7 +20,7 @@ export default {
   name: "order-list",
   components: {
     OrderItem,
-    "el-button": Button,
+    "el-button-custom": Button,
   },
   computed: {
     ...mapGetters("order", ["getOrderList"]),

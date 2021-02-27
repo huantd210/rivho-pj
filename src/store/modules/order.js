@@ -1,6 +1,10 @@
 import moment from "moment";
 import _ from "lodash";
-import { ORDER_GET_LIST, ORDER_FILTER } from "../contants/actionTypes";
+import {
+  ORDER_GET_LIST,
+  ORDER_CHANGE_VISIBLE_CREATE,
+  ORDER_CHANGE_VISIBLE_EDIT
+} from "../contants/actionTypes";
 import axios from "../../config/axios";
 
 export default {
@@ -8,17 +12,27 @@ export default {
   state: () => {
     return {
       orderList: [],
-      orderFilter: ""
+      orderFilter: "",
+      isVisibleDialogCreate: false,
+      isVisibleDialogEdit: false
     };
   },
   getters: {
     getOrderList: state => state.orderList,
-    getOrderFilter: state => state.orderFilter
+    getOrderFilter: state => state.orderFilter,
+    getVisibleDialogCreate: state => state.isVisibleDialogCreate,
+    getVisibleDialogEdit: state => state.isVisibleDialogEdit
   },
   mutations: {
     [ORDER_GET_LIST](state, payload) {
       state.orderList = payload.orderList;
       state.orderFilter = payload.orderFilter;
+    },
+    [ORDER_CHANGE_VISIBLE_CREATE](state, payload) {
+      state.isVisibleDialogCreate = payload.isVisibleDialogCreate;
+    },
+    [ORDER_CHANGE_VISIBLE_EDIT](state, payload) {
+      state.isVisibleDialogEdit = payload.isVisibleDialogEdit;
     }
   },
   actions: {
@@ -80,6 +94,16 @@ export default {
       };
 
       fetchOrderList();
+    },
+    [ORDER_CHANGE_VISIBLE_CREATE](context, payload) {
+      context.commit(ORDER_CHANGE_VISIBLE_CREATE, {
+        isVisibleDialogCreate: payload.isVisibleDialog
+      });
+    },
+    [ORDER_CHANGE_VISIBLE_EDIT](context, payload) {
+      context.commit(ORDER_CHANGE_VISIBLE_EDIT, {
+        isVisibleDialogEdit: payload.isVisibleDialog
+      });
     }
   }
 };

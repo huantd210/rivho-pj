@@ -11,12 +11,12 @@
         <span>{{ order.endAt.format("YYYY-DD-MM HH:MM:SS") }}</span>
       </div>
       <div class="order-item__action">
-        <el-button :style="{ padding: 0, 'background-color': 'transparent' }">
+        <el-button-custom :style="{ padding: '2px' }">
           <i class="el-icon-setting"></i>
-        </el-button>
-        <el-button :style="{ padding: 0, 'background-color': 'transparent' }">
-          <i class="el-icon-s-fold"></i>
-        </el-button>
+        </el-button-custom>
+        <el-button-custom :style="{ padding: '2px' }">
+          <i class="el-icon-delete"></i>
+        </el-button-custom>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@ import Button from "../UI/Button";
 export default {
   name: "order-item",
   components: {
-    "el-button": Button,
+    "el-button-custom": Button,
   },
   props: {
     order: {

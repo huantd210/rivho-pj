@@ -8,10 +8,10 @@
       <div
         v-for="index in columns"
         :key="'row-top-' + index"
-        class="gantt__timeline-item__grid__cell--non"
+        class="gantt__timeline-item__grid__cell--non cell-has-border-bottom"
         :style="{
           ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 }),
-          borderBottom: '1px solid #98c6ff',
+          ...styleCell,
         }"
       ></div>
 
@@ -29,7 +29,7 @@
         v-for="item in timeline.blocks"
         :key="item.id"
         :block="item"
-        class="gantt__timeline-item__grid__cell--has"
+        class="gantt__timeline-item__grid__cell--has-data"
         :style="{
           ...styleBlock,
           ...getBlockGridPosition(item.gridCol, item.gridRow),
@@ -41,10 +41,11 @@
       <div
         v-for="index in columns"
         :key="'row-top-' + index"
-        class="gantt__timeline-item__grid__cell--non"
-        :style="
-          getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 })
-        "
+        class="gantt__timeline-item__grid__cell--non cell-has-border-bottom"
+        :style="{
+          ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 }),
+          ...styleCell,
+        }"
       ></div>
 
       <div
@@ -129,8 +130,18 @@ export default {
   background-color: #ffffff;
 }
 
-.gantt__timeline-item__grid__cell--has {
-  border: 1px solid #98c6ff;
-  z-index: 100px;
+.gantt__timeline-item__grid__cell--has-data {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 100;
+}
+
+.gantt__timeline-item__grid__cell--has-data:hover {
+  border: 1px solid #222f3e;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  z-index: 999;
+}
+
+.cell-has-border-bottom {
+  border-bottom: 1px solid #98c6ff;
 }
 </style>

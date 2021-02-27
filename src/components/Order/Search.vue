@@ -16,9 +16,9 @@
         </div>
       </div>
       <div class="order-search__action">
-        <el-button :style="{ padding: '2px 10px', margin: 0 }">
+        <el-button-custom :style="{ padding: '2px 10px', margin: 0 }">
           <i class="el-icon-search" />
-        </el-button>
+        </el-button-custom>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@ import Button from "../UI/Button";
 export default {
   name: "order-list",
   components: {
-    "el-button": Button,
+    "el-button-custom": Button,
   },
   data() {
     return {
@@ -43,12 +43,16 @@ export default {
 <style scoped>
 .order-search {
   margin-bottom: 12px;
+  padding-right: 6px;
   display: flex;
-  justify-content: space-between;
+}
+
+.order-search__left {
+  min-width: 120px;
+  flex: 1 1 30%;
 }
 
 .order-search__left span {
-  min-width: 100px;
   font-size: 16px;
   font-weight: bold;
 }
@@ -57,6 +61,8 @@ export default {
   padding-left: 12px;
   padding-right: 6px;
   align-items: center;
+  flex: 1 1 70%;
+  justify-content: flex-end;
   display: flex;
 }
 
@@ -72,7 +78,6 @@ export default {
 .order-search__input__main {
   height: 100%;
   width: 70%;
-  max-width: 120px;
   flex-grow: 1;
 }
 

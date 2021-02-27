@@ -44,7 +44,8 @@ export default {
 }
 
 .btn:hover {
-  opacity: 0.8;
+  --color: #ffffff;
+  background-color: #feca57;
 }
 
 .btn:focus {

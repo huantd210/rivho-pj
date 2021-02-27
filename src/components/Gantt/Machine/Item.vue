@@ -6,9 +6,9 @@
           <span>{{ machine.code }}</span>
         </div>
         <div class="gantt__machine-item__left__action">
-          <el-button :style="{ padding: 0, 'background-color': 'transparent' }">
+          <el-button-custom :style="{ padding: '2px', marginTop: '2px' }">
             <i class="el-icon-video-play"></i>
-          </el-button>
+          </el-button-custom>
         </div>
         <div class="gantt__machine-item__left__describe"></div>
       </div>
@@ -26,7 +26,7 @@ import Button from "../../UI/Button";
 export default {
   name: "gantt-machine-item",
   components: {
-    "el-button": Button,
+    "el-button-custom": Button,
   },
   props: {
     machine: {
