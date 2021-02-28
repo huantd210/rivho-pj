@@ -136,8 +136,10 @@ export default {
 }
 
 .gantt__timeline-item__grid__cell--has-data:hover {
+  opacity: 0.95;
   border: 1px solid #222f3e;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px0,
+    rgba(60, 64, 67, 0.15) 0 2px 6px 2px;
   z-index: 999;
 }
 

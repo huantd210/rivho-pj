@@ -2,15 +2,60 @@
   <div class="order-edit">
     <el-dialog
       title="New Order"
-      :visible.sync="getVisibleDialogEdit"
-      :lock-scroll="true"
+      :visible.sync="isVisibleDialog"
+      width="30%"
+      @open="handleOpenDialog"
+      @close="handleCloseDialog"
     >
-      <el-form :model="orderEdit">
-        <el-form-item label="Name">
+      <el-form
+        ref="formOrderEdit"
+        :model="orderEdit"
+        :rules="rules"
+        label-width="110px"
+      >
+        <el-form-item label="Machine code" prop="machineCode">
+          <el-input
+            v-model="orderEdit.machineCode"
+            :clearable="true"
+          ></el-input>
+        </el-form-item>
+
+        <el-form-item label="Name" prop="name">
           <el-input v-model="orderEdit.name" :clearable="true"></el-input>
         </el-form-item>
 
-        <el-form-item label="Describe">
+        <el-form-item label="Time start" prop="startAt">
+          <el-date-picker
+            type="datetime"
+            placeholder="Select date and time start"
+            style="width: 100%"
+            v-model="orderEdit.startAt"
+            :default-value="getDefaultTimeStart"
+            :clearable="true"
+          >
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="Time end" prop="endAt">
+          <el-date-picker
+            type="datetime"
+            placeholder="Select date and time end"
+            style="width: 100%"
+            v-model="orderEdit.endAt"
+            :default-value="getDefaultTimeEnd"
+            :clearable="true"
+          >
+          </el-date-picker>
+        </el-form-item>
+
+        <el-form-item
+          label="Color"
+          class="el-form-item--align-left"
+          prop="color"
+        >
+          <el-color-picker v-model="orderEdit.color"></el-color-picker>
+        </el-form-item>
+
+        <el-form-item label="Describe" prop="describe">
           <el-input
             type="textarea"
             :rows="2"
@@ -18,47 +63,18 @@
             placeholder="Place input"
           ></el-input>
         </el-form-item>
-
-        <el-form-item label="Start at">
-          <el-date-picker
-            type="datetime"
-            placeholder="Select date and time"
-            v-model="orderEdit.startAt"
-            default-value="getDefaultTimeStart"
-            default-time="09:00:00"
-            :clearable="true"
-          >
-          </el-date-picker>
-        </el-form-item>
-
-        <el-form-item label="End at">
-          <el-date-picker
-            type="datetime"
-            placeholder="Select date and time"
-            v-model="orderEdit.endAt"
-            default-value="getDefaultTimeEnd"
-            default-time="21:00:00"
-            :clearable="true"
-          >
-          </el-date-picker>
-        </el-form-item>
-
-        <el-form-item label="Machine code">
-          <el-input
-            v-model="orderEdit.machineCode"
-            :clearable="true"
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item label="Color">
-          <el-color-picker v-model="orderEdit.color"></el-color-picker>
-        </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
-        <el-button @click="handleChangeVisibleDialog(false)">Cancel</el-button>
-        <el-button type="primary" @click="handleChangeVisibleDialog(false)">
-          >Confirm</el-button
+        <el-button-custom
+          @click="handleCloseDialog"
+          :style="{ padding: '6px 12px', opacity: '0.5' }"
+          >Cancel</el-button-custom
+        >
+        <el-button-custom
+          @click="handleConfirmEditOrder"
+          :style="{ padding: '6px 12px' }"
+          >Confirm</el-button-custom
         >
       </span>
     </el-dialog>
@@ -69,37 +85,60 @@
 import { mapGetters } from "vuex";
 import moment from "moment";
 import _ from "lodash";
-import { ORDER_CHANGE_VISIBLE_EDIT } from "../../store/contants/actionTypes";
+import {
+  ORDER_CHANGE_VISIBLE_EDIT,
+  ORDER_EDIT_ORDER,
+} from "../../store/constants/actionTypes";
+import Button from "../UI/Button";
 
 export default {
   name: "order-edit",
-  props: {
-    order: Object,
+  components: {
+    "el-button-custom": Button,
   },
   computed: {
-    ...mapGetters("order", ["getVisibleDialogEdit"]),
+    ...mapGetters("order", ["getVisibleDialogEdit", "getOrderEdit"]),
     getDefaultTimeStart() {
-      let timeStart = moment()
-        .utcOffset(0)
-        .set({ hour: 9, minute: 0, second: 0 });
-      return this.orderEdit.startAt
-        ? this.orderEdit.startAt
-        : new Date(timeStart.toISOString());
+      let timeStart = moment().set({ hour: 9, minute: 0, second: 0 });
+      return new Date(timeStart.toISOString());
     },
     getDefaultTimeEnd() {
-      let timeEnd = moment()
-        .utcOffset(0)
-        .set({ hour: 21, minute: 0, second: 0 });
-      return this.orderEdit.endAt
-        ? this.orderEdit.endAt
-        : new Date(timeEnd.toISOString());
+      let timeEnd = moment().set({ hour: 21, minute: 0, second: 0 });
+      return new Date(timeEnd.toISOString());
+    },
+    isVisibleDialog: {
+      get() {
+        return this.getVisibleDialogEdit;
+      },
+      set(isVisibleDialog) {
+        return isVisibleDialog;
+      },
     },
   },
   methods: {
     handleChangeVisibleDialog(isVisibleDialog) {
       this.$store.dispatch(`order/${ORDER_CHANGE_VISIBLE_EDIT}`, {
         isVisibleDialog,
+        order: "", // reset edit order
       });
+    },
+    handleOpenDialog() {
+      if (this.getOrderEdit && !_.isEmpty(this.getOrderEdit)) {
+        this.orderEdit = { ...this.getOrderEdit };
+      }
+    },
+    handleCloseDialog() {
+      this.handleChangeVisibleDialog(false);
+      this.$refs.formOrderEdit.resetFields();
+    },
+    handleConfirmEditOrder() {
+      this.$store
+        .dispatch(`order/${ORDER_EDIT_ORDER}`, {
+          order: this.orderEdit,
+        })
+        .then(() => {
+          this.handleCloseDialog();
+        });
     },
   },
   data() {
@@ -112,16 +151,43 @@ export default {
         machineCode: "",
         color: "#409EFF",
       },
+      rules: {
+        name: [
+          { required: true, message: "Please input Name", trigger: "blur" },
+        ],
+        startAt: [
+          {
+            required: true,
+            type: "date",
+            message: "Please input Time start",
+            trigger: "blur",
+          },
+        ],
+        endAt: [
+          {
+            required: true,
+            type: "date",
+            message: "Please input Time end",
+            trigger: "blur",
+          },
+        ],
+        machineCode: [
+          {
+            required: true,
+            message: "Please input Machine code",
+            trigger: "blur",
+          },
+        ],
+        color: [{ required: false }],
+        describe: [{ required: false }],
+      },
     };
-  },
-
-  created() {
-    if (this.order && !_isEmpty(this.order)) {
-      this.orderEdit = this.order;
-    }
   },
 };
 </script>
 
 <style scoped>
+.el-form-item--align-left {
+  text-align: left;
+}
 </style>

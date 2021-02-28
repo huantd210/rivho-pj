@@ -6,8 +6,11 @@
           <span>{{ machine.code }}</span>
         </div>
         <div class="gantt__machine-item__left__action">
-          <el-button-custom :style="{ padding: '2px', marginTop: '2px' }">
-            <i class="el-icon-video-play"></i>
+          <el-button-custom
+            :style="{ padding: '2px', marginTop: '2px' }"
+            @click="handleEditMachine"
+          >
+            <i class="el-icon-setting"></i>
           </el-button-custom>
         </div>
         <div class="gantt__machine-item__left__describe"></div>
@@ -21,6 +24,10 @@
 </template>
 
 <script>
+import {
+  MACHINE_CHANGE_VISIBLE_EDIT,
+  MACHINE_DELETE_MACHINE,
+} from "../../../store/constants/actionTypes";
 import Button from "../../UI/Button";
 
 export default {
@@ -31,6 +38,14 @@ export default {
   props: {
     machine: {
       type: Object,
+    },
+  },
+  methods: {
+    handleEditMachine() {
+      this.$store.dispatch(`machine/${MACHINE_CHANGE_VISIBLE_EDIT}`, {
+        machine: this.machine,
+        isVisibleDialog: true,
+      });
     },
   },
 };
@@ -71,6 +86,7 @@ export default {
 .gantt__machine-item__left__action,
 .gantt__machine-item__left__describe {
   text-align: start;
+  padding-top: 3px;
   padding-left: 6px;
 }
 

@@ -13,7 +13,12 @@
         </section>
       </div>
     </main>
-    <main></main>
+    <div class="app__dialog">
+      <order-create></order-create>
+      <order-edit></order-edit>
+      <machine-create></machine-create>
+      <machine-edit></machine-edit>
+    </div>
   </div>
 </template>
 
@@ -21,6 +26,10 @@
 import TopBar from "./components/TopBar/Main";
 import Order from "./components/Order/Main";
 import Gantt from "./components/Gantt/Main";
+import OrderCreate from "./components/Order/Create";
+import OrderEdit from "./components/Order/Edit";
+import MachineCreate from "./components/Gantt/Machine/Create";
+import MachineEdit from "./components/Gantt/Machine/Edit";
 
 export default {
   name: "app",
@@ -28,14 +37,18 @@ export default {
     TopBar,
     Order,
     Gantt,
+    OrderCreate,
+    OrderEdit,
+    MachineCreate,
+    MachineEdit,
   },
 };
 </script>
 
 <style>
 * {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

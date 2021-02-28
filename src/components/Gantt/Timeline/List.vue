@@ -49,6 +49,10 @@ export default {
       type: Number,
       required: true,
     },
+    slice: {
+      type: Number,
+      required: true,
+    },
     width: {
       type: Number,
       default: 30,
@@ -69,6 +73,7 @@ export default {
     ...mapGetters("order", ["getOrderList", "getOrderFilter"]),
     getTimelineList() {
       let timelineList = [];
+      let timePerBlock = 60 / this.slice; // 60 / 4 minutes
 
       if (
         this.getMachineList.length > 0 &&
@@ -122,49 +127,52 @@ export default {
                 ) {
                   gridCol.x = this.min + 1;
                   gridCol.y =
-                    Math.floor(curOrder.endAt.diff(dateStart, "minutes") / 15) +
-                    1;
+                    Math.floor(
+                      curOrder.endAt.diff(dateStart, "minutes") / timePerBlock
+                    ) + 1;
 
                   blockStyleCustom.width =
-                    (curOrder.endAt.diff(dateStart, "minutes") / 15) *
+                    (curOrder.endAt.diff(dateStart, "minutes") / timePerBlock) *
                       this.width +
                     "px";
                 } else if (
                   curOrder.startAt > dateStart &&
                   curOrder.endAt < dateEnd
                 ) {
-                  let tempX = curOrder.startAt.diff(dateStart, "minutes") / 15;
+                  let tempX =
+                    curOrder.startAt.diff(dateStart, "minutes") / timePerBlock;
                   gridCol.x = Math.floor(tempX) + 1;
                   gridCol.y =
-                    Math.floor(curOrder.endAt.diff(dateStart, "minutes") / 15) +
-                    1;
+                    Math.floor(
+                      curOrder.endAt.diff(dateStart, "minutes") / timePerBlock
+                    ) + 1;
 
                   blockStyleCustom.left =
                     (tempX - Math.floor(tempX)) * this.width + "px";
                   blockStyleCustom.width =
-                    (curOrder.endAt.diff(curOrder.startAt, "minutes") / 15) *
+                    (curOrder.endAt.diff(curOrder.startAt, "minutes") /
+                      timePerBlock) *
                       this.width +
                     "px";
                 } else if (
                   curOrder.startAt > dateStart &&
                   curOrder.endAt >= dateEnd
                 ) {
-                  let tempX = curOrder.startAt.diff(dateStart, "minutes") / 15;
+                  let tempX =
+                    curOrder.startAt.diff(dateStart, "minutes") / timePerBlock;
                   gridCol.x = Math.floor(tempX) + 1;
                   gridCol.y = this.max + 1;
 
                   blockStyleCustom.left =
                     (tempX - Math.floor(tempX)) * this.width + "px";
                   blockStyleCustom.width =
-                    (dateEnd.diff(curOrder.startAt, "minutes") / 15) *
+                    (dateEnd.diff(curOrder.startAt, "minutes") / timePerBlock) *
                       this.width +
                     "px";
                 }
 
                 let blockItem = {
-                  ...curOrder,
-                  startAt: curOrder.startAt.format("YYYY-MM-DD HH:MM:SS"),
-                  endAt: curOrder.endAt.format("YYYY-MM-DD HH:MM:SS"),
+                  order: curOrder,
                   gridCol,
                   gridRow,
                   blockStyleCustom,

@@ -1,10 +1,13 @@
 <template>
   <div class="top-bar">
     <div class="top-bar__brand">
-      <span>RIVHO PJ</span>
+      <span>スケジュール登録</span>
     </div>
     <div class="top-bar__navigation">
       <div class="top-bar__navigation__select">
+        <div class="top-bar__navigation__label">
+          <span>工程</span>
+        </div>
         <el-select
           v-model="valueOne"
           placeholder="Select"
@@ -21,6 +24,9 @@
         </el-select>
       </div>
       <div class="top-bar__navigation__filter-date">
+        <div class="top-bar__navigation__label">
+          <span>日付</span>
+        </div>
         <el-date-picker
           v-model="dateFilter"
           type="date"
@@ -33,9 +39,13 @@
       </div>
 
       <div class="top-bar__navigation__btn-action">
-        <el-button-custom @click="handleCreateOrder">新規注文</el-button-custom>
+        <el-button-custom :style="{ height: '32px' }" @click="handleCreateOrder"
+          >新規注文</el-button-custom
+        >
 
-        <el-button-custom @click="handleCreateMachine"
+        <el-button-custom
+          :style="{ height: '32px' }"
+          @click="handleCreateMachine"
           >新しいマシン</el-button-custom
         >
       </div>
@@ -50,7 +60,8 @@ import Modal from "../UI/Modal";
 import {
   ORDER_GET_LIST,
   ORDER_CHANGE_VISIBLE_CREATE,
-} from "../../store/contants/actionTypes";
+  MACHINE_CHANGE_VISIBLE_CREATE,
+} from "../../store/constants/actionTypes";
 
 export default {
   name: "top-bar",
@@ -63,23 +74,25 @@ export default {
       if (this.dateFilter) {
         this.$store.dispatch(`order/${ORDER_GET_LIST}`, {
           filter: {
-            date: new Date(this.dateFilter),
+            date: moment(new Date(this.dateFilter), "YYYY-MM-DD"),
           },
         });
       }
     },
     handleCreateOrder() {
-      console.log("A");
-
       this.$store.dispatch(`order/${ORDER_CHANGE_VISIBLE_CREATE}`, {
         isVisibleDialog: true,
       });
     },
-    handleCreateMachine() {},
+    handleCreateMachine() {
+      this.$store.dispatch(`machine/${MACHINE_CHANGE_VISIBLE_CREATE}`, {
+        isVisibleDialog: true,
+      });
+    },
   },
   data() {
     return {
-      dateFilter: moment().utcOffset(0).format("YYYY-MM-DD"),
+      dateFilter: moment().format("YYYY-MM-DD"),
       optionsOne: [
         {
           value: "Option1",
@@ -110,7 +123,7 @@ export default {
     if (this.dateFilter) {
       await this.$store.dispatch(`order/${ORDER_GET_LIST}`, {
         filter: {
-          date: new Date(this.dateFilter),
+          date: moment(new Date(this.dateFilter), "YYYY-MM-DD"),
         },
       });
     }
@@ -123,6 +136,11 @@ export default {
   display: flex;
 }
 
+.top-bar__brand {
+  text-align: left;
+  flex: 1 1 20%;
+}
+
 .top-bar__brand span {
   font-size: 24px;
   font-weight: bold;
@@ -131,18 +149,29 @@ export default {
 .top-bar__navigation {
   color: #01a3a4;
   font-size: 16px;
-  flex-grow: 1;
+  flex: 1 1 80%;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 
 .top-bar__navigation__filter-date {
   margin-left: 10px;
 }
 
+.top-bar__navigation__select,
+.top-bar__navigation__filter-date {
+  margin-right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-bar__navigation__label {
+  margin-right: 10px;
+}
+
 .top-bar__navigation__btn-action {
   margin-left: 20px;
-  display: flex;
-  justify-content: flex-end;
 }
 </style>

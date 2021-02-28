@@ -1,12 +1,12 @@
 <template>
-  <button
+  <el-button
     :class="['btn', disabled ? 'btn--disabled' : '']"
     :style="customStyle"
     :disabled="disabled"
     @click="callback"
   >
     <slot></slot>
-  </button>
+  </el-button>
 </template>
 
 <script>
@@ -32,7 +32,7 @@ export default {
 <style scoped>
 .btn {
   margin-right: 5px;
-  padding: 1px 24px;
+  padding: 6px 12px;
   border: 1px solid var(--color);
   border-bottom-width: 2px;
   color: var(--color);

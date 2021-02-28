@@ -1,6 +1,6 @@
 import moment from "moment";
 import _ from "lodash";
-import { TIMELINE_GET_LIST } from "../contants/actionTypes";
+import { TIMELINE_GET_LIST } from "../constants/actionTypes";
 
 export default {
   namespaced: true,

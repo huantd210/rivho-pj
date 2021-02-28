@@ -4,22 +4,26 @@
       title="New Order"
       :visible.sync="isVisibleDialog"
       width="30%"
-      @open="handleChangeVisibleDialog(true)"
-      @close="handleChangeVisibleDialog(false)"
+      @close="handleCloseDialog"
     >
-      <el-form :model="orderCreate" label-width="100px">
-        <el-form-item label="Machine code">
+      <el-form
+        ref="formOrderCreate"
+        :model="orderCreate"
+        :rules="rules"
+        label-width="110px"
+      >
+        <el-form-item label="Machine code" prop="machineCode">
           <el-input
             v-model="orderCreate.machineCode"
             :clearable="true"
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="Name">
+        <el-form-item label="Name" prop="name">
           <el-input v-model="orderCreate.name" :clearable="true"></el-input>
         </el-form-item>
 
-        <el-form-item label="Time start">
+        <el-form-item label="Time start" prop="startAt">
           <el-date-picker
             type="datetime"
             placeholder="Select date and time start"
@@ -30,7 +34,7 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="Time end">
+        <el-form-item label="Time end" prop="endAt">
           <el-date-picker
             type="datetime"
             placeholder="Select date and time end"
@@ -42,11 +46,15 @@
           </el-date-picker>
         </el-form-item>
 
-        <el-form-item label="Color" class="el-form-item--align-left">
+        <el-form-item
+          label="Color"
+          class="el-form-item--align-left"
+          prop="color"
+        >
           <el-color-picker v-model="orderCreate.color"></el-color-picker>
         </el-form-item>
 
-        <el-form-item label="Describe">
+        <el-form-item label="Describe" prop="describe">
           <el-input
             type="textarea"
             :rows="2"
@@ -58,12 +66,12 @@
 
       <span slot="footer" class="dialog-footer">
         <el-button-custom
-          @click="handleChangeVisibleDialog(false)"
+          @click="handleCloseDialog"
           :style="{ padding: '6px 12px', opacity: '0.5' }"
           >Cancel</el-button-custom
         >
         <el-button-custom
-          @click="handleChangeVisibleDialog(false)"
+          @click="handleConfirmCreateOrder"
           :style="{ padding: '6px 12px' }"
           >Confirm</el-button-custom
         >
@@ -75,7 +83,10 @@
 <script>
 import { mapGetters } from "vuex";
 import moment from "moment";
-import { ORDER_CHANGE_VISIBLE_CREATE } from "../../store/contants/actionTypes";
+import {
+  ORDER_CHANGE_VISIBLE_CREATE,
+  ORDER_CREATE_ORDER,
+} from "../../store/constants/actionTypes";
 import Button from "../UI/Button";
 
 export default {
@@ -86,16 +97,11 @@ export default {
   computed: {
     ...mapGetters("order", ["getVisibleDialogCreate"]),
     getDefaultTimeStart() {
-      let timeStart = moment()
-        .utcOffset(0)
-        .set({ hour: 9, minute: 0, second: 0 });
-      console.log(timeStart.format("YYYY-MM-DD HH:mm:ss"));
+      let timeStart = moment().set({ hour: 9, minute: 0, second: 0 });
       return new Date(timeStart.toISOString());
     },
     getDefaultTimeEnd() {
-      let timeEnd = moment()
-        .utcOffset(0)
-        .set({ hour: 21, minute: 0, second: 0 });
+      let timeEnd = moment().set({ hour: 21, minute: 0, second: 0 });
       return new Date(timeEnd.toISOString());
     },
     isVisibleDialog: {
@@ -113,6 +119,25 @@ export default {
         isVisibleDialog,
       });
     },
+    handleCloseDialog() {
+      this.handleChangeVisibleDialog(false);
+      this.$refs.formOrderCreate.resetFields();
+    },
+    handleConfirmCreateOrder() {
+      this.$refs.formOrderCreate.validate((valid) => {
+        if (valid) {
+          this.$store
+            .dispatch(`order/${ORDER_CREATE_ORDER}`, {
+              order: this.orderCreate,
+            })
+            .then(() => {
+              this.handleCloseDialog();
+            });
+        } else {
+          return false;
+        }
+      });
+    },
   },
   data() {
     return {
@@ -123,6 +148,36 @@ export default {
         endAt: "",
         machineCode: "",
         color: "#409EFF",
+      },
+      rules: {
+        name: [
+          { required: true, message: "Please input Name", trigger: "blur" },
+        ],
+        startAt: [
+          {
+            required: true,
+            type: "date",
+            message: "Please input Time start",
+            trigger: "blur",
+          },
+        ],
+        endAt: [
+          {
+            required: true,
+            type: "date",
+            message: "Please input Time end",
+            trigger: "blur",
+          },
+        ],
+        machineCode: [
+          {
+            required: true,
+            message: "Please input Machine code",
+            trigger: "blur",
+          },
+        ],
+        color: [{ required: false }],
+        describe: [{ required: false }],
       },
     };
   },

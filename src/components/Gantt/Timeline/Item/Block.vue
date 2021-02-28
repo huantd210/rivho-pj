@@ -1,7 +1,7 @@
 <template>
   <div
     class="gantt__timeline-item__block"
-    :style="{ 'background-color': block.color, color: '#000000' }"
+    :style="{ 'background-color': block.order.color, color: '#000000' }"
   >
     <el-popover
       placement="top"
@@ -10,22 +10,23 @@
       popper-class="gantt__timeline-item__block__popover"
     >
       <div class="gantt__timeline-item__block__popover__body">
-        <el-button-custom :style="{ padding: '2px' }">
-          <i class="el-icon-s-fold"></i>
-        </el-button-custom>
-
-        <el-button-custom :style="{ padding: '2px' }">
+        <el-button-custom :style="{ padding: '2px' }" @click="handleEditOrder">
           <i class="el-icon-setting"></i>
         </el-button-custom>
 
-        <el-button-custom :style="{ padding: '2px' }">
-          <i class="el-icon-delete"></i>
-        </el-button-custom>
+        <el-popconfirm
+          title="Are you sure to delete this?"
+          @confirm="handleDeleteOrder"
+        >
+          <el-button-custom slot="reference" :style="{ padding: '2px' }">
+            <i class="el-icon-delete"></i>
+          </el-button-custom>
+        </el-popconfirm>
       </div>
 
       <div class="gantt__timeline-item__block__trigger" slot="reference">
         <span>
-          {{ block.name }}
+          {{ block.order.name }}
         </span>
       </div>
     </el-popover>
@@ -33,6 +34,10 @@
 </template>
 
 <script>
+import {
+  ORDER_CHANGE_VISIBLE_EDIT,
+  ORDER_DELETE_ORDER,
+} from "../../../../store/constants/actionTypes";
 import Button from "../../../UI/Button";
 
 export default {
@@ -50,6 +55,19 @@ export default {
     return {
       isVisiblePopover: false,
     };
+  },
+  methods: {
+    handleEditOrder() {
+      this.$store.dispatch(`order/${ORDER_CHANGE_VISIBLE_EDIT}`, {
+        isVisibleDialog: true,
+        order: this.block.order,
+      });
+    },
+    handleDeleteOrder() {
+      this.$store.dispatch(`order/${ORDER_DELETE_ORDER}`, {
+        orderId: this.block.order.id,
+      });
+    },
   },
 };
 </script>

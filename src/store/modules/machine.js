@@ -1,19 +1,47 @@
-import { MACHINE_GET_LIST } from "../contants/actionTypes";
+import {
+  MACHINE_GET_LIST,
+  MACHINE_CHANGE_VISIBLE_CREATE,
+  MACHINE_CHANGE_VISIBLE_EDIT,
+  MACHINE_CREATE_MACHINE,
+  MACHINE_EDIT_MACHINE
+} from "../constants/actionTypes";
 import axios from "../../config/axios";
 
 export default {
   namespaced: true,
   state: () => {
     return {
-      machineList: []
+      machineList: [],
+      machineEdit: "",
+      isVisibleDialogCreate: false,
+      isVisibleDialogEdit: false
     };
   },
   getters: {
-    getMachineList: state => state.machineList
+    getMachineList: state => state.machineList,
+    getMachineEdit: state => state.machineEdit,
+    getVisibleDialogCreate: state => state.isVisibleDialogCreate,
+    getVisibleDialogEdit: state => state.isVisibleDialogEdit
   },
   mutations: {
     [MACHINE_GET_LIST](state, payload) {
       state.machineList = payload.machineList;
+    },
+    [MACHINE_CHANGE_VISIBLE_CREATE](state, payload) {
+      state.isVisibleDialogCreate = payload.isVisibleDialogCreate;
+    },
+    [MACHINE_CHANGE_VISIBLE_EDIT](state, payload) {
+      state.isVisibleDialogEdit = payload.isVisibleDialogEdit;
+      state.machineEdit = payload.machineEdit;
+    },
+    [MACHINE_CREATE_MACHINE](state, payload) {
+      payload.machineCreate.id = state.machineList.length;
+      state.machineList.push(payload.machineCreate);
+    },
+    [MACHINE_EDIT_MACHINE](state, payload) {
+      state.machineList = state.machineList.map(machine =>
+        machine.id === payload.machineEdit.id ? payload.machineEdit : machine
+      );
     }
   },
   actions: {
@@ -42,6 +70,27 @@ export default {
       };
 
       fetchMachineList();
+    },
+    [MACHINE_CHANGE_VISIBLE_CREATE](context, payload) {
+      context.commit(MACHINE_CHANGE_VISIBLE_CREATE, {
+        isVisibleDialogCreate: payload.isVisibleDialog
+      });
+    },
+    [MACHINE_CHANGE_VISIBLE_EDIT](context, payload) {
+      context.commit(MACHINE_CHANGE_VISIBLE_EDIT, {
+        isVisibleDialogEdit: payload.isVisibleDialog,
+        machineEdit: !_.isEmpty(payload.machine) ? payload.machine : ""
+      });
+    },
+    [MACHINE_CREATE_MACHINE](context, payload) {
+      context.commit(MACHINE_CREATE_MACHINE, {
+        machineCreate: payload.machine
+      });
+    },
+    [MACHINE_EDIT_MACHINE](context, payload) {
+      context.commit(MACHINE_EDIT_MACHINE, {
+        machineEdit: payload.machine
+      });
     }
   }
 };

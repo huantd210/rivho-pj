@@ -37,6 +37,7 @@
         :end="end"
         :min="0"
         :max="(this.end - this.start) * this.slice"
+        :slice="slice"
         :width="width"
         :height="height"
         :styleCell="{ width: width + 'px', height: height + 'px' }"
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import { MACHINE_GET_LIST } from "../../store/contants/actionTypes";
+import { MACHINE_GET_LIST } from "../../store/constants/actionTypes";
 import TimelineList from "./Timeline/List";
 import CalendarList from "./Calendar/List";
 import MachineList from "./Machine/List";
