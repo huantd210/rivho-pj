@@ -1,5 +1,6 @@
 import {
   MACHINE_GET_LIST,
+  MACHINE_CHANGE_FILTER_MACHINE,
   MACHINE_CHANGE_VISIBLE_CREATE,
   MACHINE_CHANGE_VISIBLE_EDIT,
   MACHINE_CREATE_MACHINE,
@@ -12,6 +13,7 @@ export default {
   state: () => {
     return {
       machineList: [],
+      filterMachine: "",
       machineEdit: "",
       isVisibleDialogCreate: false,
       isVisibleDialogEdit: false
@@ -19,6 +21,24 @@ export default {
   },
   getters: {
     getMachineList: state => state.machineList,
+    getMachineListByFilter: state => {
+      if (state.filterMachine && state.filterMachine.code) {
+        console.log("A");
+        return state.machineList.filter(
+          machine => machine.code === state.filterMachine.code
+        );
+      }
+
+      return state.machineList;
+    },
+    getCodeMachineList: state =>
+      state.machineList.map(machine => {
+        return {
+          id: machine.id,
+          code: machine.code
+        };
+      }),
+    getFilterMachine: state => state.filterMachine,
     getMachineEdit: state => state.machineEdit,
     getVisibleDialogCreate: state => state.isVisibleDialogCreate,
     getVisibleDialogEdit: state => state.isVisibleDialogEdit
@@ -26,6 +46,9 @@ export default {
   mutations: {
     [MACHINE_GET_LIST](state, payload) {
       state.machineList = payload.machineList;
+    },
+    [MACHINE_CHANGE_FILTER_MACHINE](state, payload) {
+      state.filterMachine = payload.filterMachine;
     },
     [MACHINE_CHANGE_VISIBLE_CREATE](state, payload) {
       state.isVisibleDialogCreate = payload.isVisibleDialogCreate;
@@ -70,6 +93,9 @@ export default {
       };
 
       fetchMachineList();
+    },
+    [MACHINE_CHANGE_FILTER_MACHINE](context, payload) {
+      context.commit(MACHINE_CHANGE_FILTER_MACHINE, payload);
     },
     [MACHINE_CHANGE_VISIBLE_CREATE](context, payload) {
       context.commit(MACHINE_CHANGE_VISIBLE_CREATE, {

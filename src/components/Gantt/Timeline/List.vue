@@ -1,6 +1,9 @@
 <template>
   <div class="gantt__timeline-list">
-    <div v-if="getTimelineList.length > 0" class="gantt__timeline-wrapper">
+    <div
+      v-if="getTimelineList && getTimelineList.length > 0"
+      class="gantt__timeline-wrapper"
+    >
       <item-grid
         v-for="item in getTimelineList"
         :key="item.id"
@@ -12,7 +15,7 @@
     </div>
     <div v-else class="gantt__timeline-wrapper--empty">
       <item-grid
-        v-for="item in getMachineList.length"
+        v-for="item in getMachineListByFilter.length"
         :key="item"
         :columns="max - min"
         :styleCell="styleCell"
@@ -69,36 +72,38 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("machine", ["getMachineList"]),
-    ...mapGetters("order", ["getOrderList", "getOrderFilter"]),
+    ...mapGetters("machine", ["getMachineListByFilter"]),
+    ...mapGetters("order", ["getOrderListByFilter", "getFilterOrder"]),
     getTimelineList() {
       let timelineList = [];
       let timePerBlock = 60 / this.slice; // 60 / 4 minutes
 
       if (
-        this.getMachineList.length > 0 &&
-        this.getOrderList.length > 0 &&
-        this.getOrderFilter &&
-        this.getOrderFilter.date
+        this.getMachineListByFilter &&
+        this.getOrderListByFilter &&
+        this.getMachineListByFilter.length > 0 &&
+        this.getOrderListByFilter.length > 0 &&
+        this.getFilterOrder &&
+        this.getFilterOrder.date !== ""
       ) {
-        let dateStart = moment(this.getOrderFilter.date)
+        let dateStart = moment(this.getFilterOrder.date)
           .set("hour", this.start)
           .set("minute", 0);
-        let dateEnd = moment(this.getOrderFilter.date)
+        let dateEnd = moment(this.getFilterOrder.date)
           .set("hour", this.end)
           .set("minute", 0);
 
         // console.log("dateStart", dateStart);
         // console.log("dateEnd", dateEnd);
 
-        timelineList = this.getMachineList.map((machine) => {
+        timelineList = this.getMachineListByFilter.map((machine) => {
           let timelineItem = {
             id: machine.id,
             code: machine.code,
             blocks: [],
           };
 
-          timelineItem.blocks = this.getOrderList.reduce(
+          timelineItem.blocks = this.getOrderListByFilter.reduce(
             (blockList, curOrder) => {
               if (curOrder.machineCode === machine.code) {
                 let gridCol = { x: 1, y: 2 };
@@ -178,6 +183,8 @@ export default {
                   blockStyleCustom,
                 };
 
+                // console.log(blockItem);
+
                 blockList.push(blockItem);
               }
 
@@ -185,13 +192,12 @@ export default {
             },
             []
           );
-
           return timelineItem;
         });
       }
 
       // console.log("timelineList ", timelineList);
-      // console.log("getOrderFilter ", this.getOrderFilter);
+      // console.log("getFilterOrder ", this.getFilterOrder);
 
       return timelineList;
     },

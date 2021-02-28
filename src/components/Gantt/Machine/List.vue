@@ -1,14 +1,17 @@
 <template>
   <div
     :class="[
-      getMachineList.length > 0
+      getMachineListByFilter.length > 0
         ? 'gantt__machine-list'
         : 'gantt__machine-list--empty',
     ]"
   >
-    <div v-if="getMachineList.length > 0" class="gantt__machine-list__wrapper">
+    <div
+      v-if="getMachineListByFilter.length > 0"
+      class="gantt__machine-list__wrapper"
+    >
       <item
-        v-for="item in getMachineList"
+        v-for="item in getMachineListByFilter"
         :key="item.id"
         :machine="item"
         :style="styleLabel"
@@ -38,7 +41,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("machine", ["getMachineList"]),
+    ...mapGetters("machine", ["getMachineListByFilter"]),
   },
 };
 </script>

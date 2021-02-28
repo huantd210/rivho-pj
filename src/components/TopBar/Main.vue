@@ -9,16 +9,19 @@
           <span>工程</span>
         </div>
         <el-select
-          v-model="valueOne"
-          placeholder="Select"
+          v-model="codeFilterMachine"
+          filterable
+          placeholder="Machine"
           size="small"
           popper-class="popper-for-input"
+          @change="handleSelectCodeFilterMachine"
         >
+          <el-option key="'item-non" label="All" value=""> </el-option>
           <el-option
-            v-for="item in optionsOne"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in getCodeMachineList"
+            :key="item.id"
+            :label="item.code"
+            :value="item.code"
           >
           </el-option>
         </el-select>
@@ -28,10 +31,10 @@
           <span>日付</span>
         </div>
         <el-date-picker
-          v-model="dateFilter"
+          v-model="dateFilterOrder"
           type="date"
           placeholder="Pick a day"
-          @change="handleInputdateFilter"
+          @change="handleInputDateOrderFilter"
           size="small"
           popper-class="popper-for-input"
         >
@@ -54,12 +57,14 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import moment from "moment";
 import Button from "../UI/Button";
 import Modal from "../UI/Modal";
 import {
-  ORDER_GET_LIST,
+  ORDER_CHANGE_FILTER_ORDER,
   ORDER_CHANGE_VISIBLE_CREATE,
+  MACHINE_CHANGE_FILTER_MACHINE,
   MACHINE_CHANGE_VISIBLE_CREATE,
 } from "../../store/constants/actionTypes";
 
@@ -69,15 +74,25 @@ export default {
     "el-button-custom": Button,
     "el-modal": Modal,
   },
+  computed: {
+    ...mapGetters("machine", ["getCodeMachineList"]),
+  },
   methods: {
-    handleInputdateFilter() {
-      if (this.dateFilter) {
-        this.$store.dispatch(`order/${ORDER_GET_LIST}`, {
-          filter: {
-            date: moment(new Date(this.dateFilter), "YYYY-MM-DD"),
+    handleInputDateOrderFilter() {
+      if (this.dateFilterOrder) {
+        this.$store.dispatch(`order/${ORDER_CHANGE_FILTER_ORDER}`, {
+          filterOrder: {
+            date: moment(new Date(this.dateFilterOrder), "YYYY-MM-DD"),
           },
         });
       }
+    },
+    handleSelectCodeFilterMachine() {
+      this.$store.dispatch(`machine/${MACHINE_CHANGE_FILTER_MACHINE}`, {
+        filterMachine: {
+          code: this.codeFilterMachine,
+        },
+      });
     },
     handleCreateOrder() {
       this.$store.dispatch(`order/${ORDER_CHANGE_VISIBLE_CREATE}`, {
@@ -92,38 +107,15 @@ export default {
   },
   data() {
     return {
-      dateFilter: moment().format("YYYY-MM-DD"),
-      optionsOne: [
-        {
-          value: "Option1",
-          label: "Option1",
-        },
-        {
-          value: "Option2",
-          label: "Option2",
-        },
-        {
-          value: "Option3",
-          label: "Option3",
-        },
-        {
-          value: "Option4",
-          label: "Option4",
-        },
-        {
-          value: "Option5",
-          label: "Option5",
-        },
-      ],
-      valueOne: "",
-      showModal: false,
+      dateFilterOrder: moment("2021-02-28").format("YYYY-MM-DD"),
+      codeFilterMachine: "",
     };
   },
   async created() {
-    if (this.dateFilter) {
-      await this.$store.dispatch(`order/${ORDER_GET_LIST}`, {
-        filter: {
-          date: moment(new Date(this.dateFilter), "YYYY-MM-DD"),
+    if (this.dateFilterOrder) {
+      await this.$store.dispatch(`order/${ORDER_CHANGE_FILTER_ORDER}`, {
+        filterOrder: {
+          date: moment(new Date(this.dateFilterOrder), "YYYY-MM-DD"),
         },
       });
     }

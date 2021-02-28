@@ -1,8 +1,11 @@
 <template>
   <div class="order-list">
-    <div v-if="getOrderList.length > 0" class="order-list__wrapper">
+    <div
+      v-if="getOrderListByFilter && getOrderListByFilter.length > 0"
+      class="order-list__wrapper"
+    >
       <order-item
-        v-for="item in getOrderList"
+        v-for="item in getOrderListByFilter"
         :key="item.id"
         :order="item"
       ></order-item>
@@ -23,7 +26,7 @@ export default {
     "el-button-custom": Button,
   },
   computed: {
-    ...mapGetters("order", ["getOrderList"]),
+    ...mapGetters("order", ["getOrderListByFilter"]),
   },
 };
 </script>

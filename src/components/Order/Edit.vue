@@ -129,7 +129,6 @@ export default {
     },
     handleCloseDialog() {
       this.handleChangeVisibleDialog(false);
-      this.$refs.formOrderEdit.resetFields();
     },
     handleConfirmEditOrder() {
       this.$store

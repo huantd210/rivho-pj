@@ -96,6 +96,8 @@ export default {
 }
 
 .gantt__machine-item__right span {
+  padding-left: 6px;
+  font-size: 14px;
   display: block;
 }
 </style>
