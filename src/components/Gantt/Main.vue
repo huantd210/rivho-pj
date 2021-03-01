@@ -20,8 +20,8 @@
     <div id="chart-list" ref="ganttChartList" class="gantt__chart-list">
       <machine-list
         :styleLabel="{
-          minHeight: height + 'px',
-          height: height + 'px',
+          minHeight: height * 2 + 'px',
+          height: height * 2 + 'px',
         }"
       ></machine-list>
       <div class="gantt__chart-list__virtual-scroll"></div>

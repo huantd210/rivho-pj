@@ -23,7 +23,22 @@
             <i class="el-icon-delete"></i>
           </el-button-custom>
         </el-popconfirm>
+
+        <el-button-custom
+          :style="{ padding: '2px' }"
+          @click="handleChangeVisibleProcessList"
+        >
+          <i v-if="isVisibleProcessList" class="el-icon-caret-top"></i>
+          <i v-else class="el-icon-caret-bottom"></i>
+        </el-button-custom>
       </div>
+    </div>
+    <div v-if="isVisibleProcessList" class="order-item__list-process">
+      <ul>
+        <li>{{ order.name }}-1</li>
+        <li>{{ order.name }}-2</li>
+        <li>{{ order.name }}-3</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -66,14 +81,20 @@ export default {
         orderId: this.order.id,
       });
     },
+    handleChangeVisibleProcessList() {
+      this.isVisibleProcessList = !this.isVisibleProcessList;
+    },
+  },
+  data() {
+    return {
+      isVisibleProcessList: false,
+    };
   },
 };
 </script>
 
 <style scoped>
 .order-item {
-  width: 100%;
-  height: 90px;
   padding-top: 2px;
   padding-left: 8px;
   padding-bottom: 2px;
@@ -84,10 +105,9 @@ export default {
 }
 
 .order-item__wrapper {
-  height: 100%;
   width: 100%;
+  height: 110px;
   padding-top: 2px;
-  padding-bottom: 2px;
   border-bottom: 2px solid #b33939;
   overflow: hidden;
   display: flex;
@@ -103,10 +123,22 @@ export default {
 }
 
 .order-item__action {
+  padding-top: 2px;
+  padding-bottom: 2px;
   padding-left: 10px;
   background-color: #222f3e;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+}
+
+.order-item__list-process {
+  background-color: #98c6ff;
+  text-align: left;
+}
+
+.order-item__list-process li {
+  padding: 6px;
+  background-color: #576574;
 }
 </style>
