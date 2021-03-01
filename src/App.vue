@@ -47,8 +47,6 @@ export default {
 
   methods: {
     onResize() {
-      console.log("B", window.innerWidth);
-
       this.$store.dispatch(WINDOW_RESIZE, {
         windowWidth: window.innerWidth,
         windowHeight: window.innerHeight,
