@@ -6,20 +6,20 @@
     <div class="order-item__wrapper" :style="getStyleOrder">
       <div class="order-item__extend">
         <div class="order-item__extend__warning">
-          <i class="el-icon-warning"></i>
+          <font-awesome-icon icon="exclamation-triangle" />
         </div>
         <el-button-custom
           :style="{ padding: '2px' }"
           @click="handleChangeVisibleProcessList"
         >
-          <i v-if="isVisibleProcessList" class="el-icon-caret-top"></i>
-          <i v-else class="el-icon-caret-bottom"></i>
+          <i v-if="isVisibleProcessList" class="el-icon-minus"></i>
+          <i v-else class="el-icon-plus"></i>
         </el-button-custom>
       </div>
       <div class="order-item__describe">
         <span>物件ID: {{ order.id }}</span>
-        <span>検索: {{ order.machineCode }}</span>
-        <span>F番: {{ order.name }}</span>
+        <span>得意先名: {{ order.machineCode }}</span>
+        <span>F番: {{ order.quantity }}</span>
         <span>入荷日: {{ getStringTimeStart }}</span>
       </div>
       <div class="order-item__action">
@@ -144,7 +144,7 @@ export default {
 
 .order-item__extend .order-item__extend__warning {
   color: #feca57;
-  font-size: 22px;
+  font-size: 16px;
 }
 
 .order-item__describe span {
