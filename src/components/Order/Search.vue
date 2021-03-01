@@ -5,7 +5,7 @@
     </div>
     <div class="order-search__right">
       <div class="order-search__action">
-        <el-button-custom :style="{ padding: '6px 12px', margin: 0 }">
+        <el-button-custom :style="{ padding: '8px 24px', margin: 0 }">
           検索
         </el-button-custom>
       </div>

@@ -17,7 +17,7 @@
           :style="{ width: '120px' }"
           @change="handleSelectCodeFilterMachine"
         >
-          <el-option key="'item-non" label="All" value=""> </el-option>
+          <el-option key="'item-non" label="すべて" value=""> </el-option>
           <el-option
             v-for="item in getCodeMachineList"
             :key="item.id"
@@ -41,17 +41,43 @@
           popper-class="popper-for-input"
         >
         </el-date-picker>
+
+        <div class="top-bar__navigation__select-day">
+          <span class="top-bar__navigation__select-day__btn">
+            <i class="el-icon-d-arrow-left"></i>
+            <i class="el-icon-caret-left"></i>
+          </span>
+          <span>{{ getDayFilterDate }}</span>
+          <span class="top-bar__navigation__select-day__btn">
+            <i class="el-icon-caret-right"></i>
+            <i class="el-icon-d-arrow-right"></i>
+          </span>
+        </div>
+      </div>
+      <div class="top-bar__navigation__select">
+        <div class="top-bar__navigation__label">
+          <span>スケール</span>
+        </div>
+        <el-select
+          v-model="scaleValue"
+          placeholder="スケール"
+          size="small"
+          popper-class="popper-for-input"
+          :style="{ width: '140px' }"
+        >
+          <el-option key="'item-non" label="NNNNNNNN" value=""> </el-option>
+        </el-select>
       </div>
 
       <div class="top-bar__navigation__btn-action">
         <el-button-custom :style="{ height: '32px' }" @click="handleCreateOrder"
-          >新規注文</el-button-custom
+          >登録</el-button-custom
         >
 
         <el-button-custom
           :style="{ height: '32px' }"
-          @click="handleCreateMachine"
-          >新しいマシン</el-button-custom
+          @click="handleRefreshWebApp"
+          >画面更新</el-button-custom
         >
       </div>
     </div>
@@ -79,6 +105,15 @@ export default {
   computed: {
     ...mapGetters(["getWindow"]),
     ...mapGetters("machine", ["getCodeMachineList"]),
+    ...mapGetters("order", ["getFilterOrder"]),
+    getDayFilterDate() {
+      console.log(this.getFilterOrder.date);
+      if (this.getFilterOrder && this.getFilterOrder.date) {
+        return this.getFilterOrder.date.day();
+      }
+
+      return "日";
+    },
   },
   methods: {
     handleInputDateOrderFilter() {
@@ -107,11 +142,15 @@ export default {
         isVisibleDialog: true,
       });
     },
+    handleRefreshWebApp() {
+      location.reload();
+    },
   },
   data() {
     return {
       dateFilterOrder: moment("2021-02-28").format("YYYY-MM-DD"),
       codeFilterMachine: "",
+      scaleValue: "",
     };
   },
   async created() {
@@ -154,6 +193,30 @@ export default {
 
 .top-bar__navigation__filter-date {
   margin-left: 10px;
+}
+
+.top-bar__navigation__select-day {
+  width: 100px;
+  height: 32px;
+  margin-left: 10px;
+  border: 1px solid #01a3a4;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-bar__navigation__select-day__btn {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-bar__navigation__select-day__btn:hover {
+  opacity: 0.5;
 }
 
 .top-bar__navigation__select,

@@ -117,6 +117,7 @@ export default {
   margin-right: 10px;
   padding-top: 24px;
   padding-left: 8px;
+  border-top-left-radius: 6px;
   background-color: #576574;
   grid-column: 1 / 2;
 }

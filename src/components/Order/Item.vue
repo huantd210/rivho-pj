@@ -9,11 +9,19 @@
           <font-awesome-icon icon="exclamation-triangle" />
         </div>
         <el-button-custom
-          :style="{ padding: '2px' }"
+          :style="{ padding: '4px', borderRadius: '50%' }"
+          @click="handleChangeVisibleProcessList"
+          class="order-item__action__btn-delete"
+          v-if="isVisibleProcessList"
+        >
+          <i class="el-icon-minus"></i>
+        </el-button-custom>
+        <el-button-custom
+          v-else
+          :style="{ padding: '4px', borderRadius: '50%' }"
           @click="handleChangeVisibleProcessList"
         >
-          <i v-if="isVisibleProcessList" class="el-icon-minus"></i>
-          <i v-else class="el-icon-plus"></i>
+          <i class="el-icon-plus"></i>
         </el-button-custom>
       </div>
       <div class="order-item__describe">
@@ -37,12 +45,56 @@
         </el-popconfirm>
       </div>
     </div>
-    <div v-if="isVisibleProcessList" class="order-item__list-process">
-      <ul>
-        <li>{{ order.name }}-1</li>
-        <li>{{ order.name }}-2</li>
-        <li>{{ order.name }}-3</li>
-      </ul>
+    <div
+      v-if="isVisibleProcessList"
+      class="order-item__list-process"
+      :style="{ backgroundColor: order.color }"
+    >
+      <div class="order-item__list-process__describe">
+        <span> 品名：NNNNNNNNNNNNNNNNNNNN</span>
+        <span>数量：9,999,999</span>
+        <span>納期：2021/01/01</span>
+      </div>
+      <div class="order-item__list-process__table">
+        <div class="order-item__list-process__table">
+          <div class="order-item__list-process__table-title">
+            <span :style="{ fontSize: '9px' }">スケジュール状態</span>
+            <span>機械</span>
+            <span>ファイル区分</span>
+            <span>数量</span>
+          </div>
+          <div class="order-item__list-process__table-body">
+            <div class="order-item__list-process__table-body__group">
+              <div class="order-item__list-process__table-body__row">
+                <span>完</span>
+                <span>NNNNNNN</span>
+                <span>NNNNNNN</span>
+                <span>999999</span>
+              </div>
+              <div class="order-item__list-process__table-body__row">
+                <span>完</span>
+                <span>NNNNNNN</span>
+                <span>NNNNNNN</span>
+                <span>999999</span>
+              </div>
+            </div>
+            <div class="order-item__list-process__table-body__group">
+              <div class="order-item__list-process__table-body__row">
+                <span>完</span>
+                <span>NNNNNNN</span>
+                <span>NNNNNNN</span>
+                <span>999999</span>
+              </div>
+              <div class="order-item__list-process__table-body__row">
+                <span>完</span>
+                <span>NNNNNNN</span>
+                <span>NNNNNNN</span>
+                <span>999999</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -162,13 +214,45 @@ export default {
 }
 
 .order-item__list-process {
-  background-color: #98c6ff;
   text-align: left;
+  padding-left: 35px;
 }
 
 .order-item__list-process li {
   padding: 6px;
   color: #ffffff;
   background-color: #576574;
+}
+
+.order-item__action__btn-delete:hover {
+  background-color: #eb2f06;
+}
+
+.order-item__list-process__describe {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-item__list-process__table {
+  margin-top: 5px;
+}
+
+.order-item__list-process__table-title,
+.order-item__list-process__table-body__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.order-item__list-process__table-body__group {
+  width: 100%;
+  margin-bottom: 6px;
+  background-color: #98c6ff;
+}
+
+.order-item__list-process__table-title span,
+.order-item__list-process__table-body__row span {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
 }
 </style>

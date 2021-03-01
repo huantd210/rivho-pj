@@ -18,7 +18,7 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 library.add(faExclamationTriangle);
 
 // configure language
-locale.use(enLocale);
+locale.use(jaLocale);
 
 new Vue({
   el: "#app",

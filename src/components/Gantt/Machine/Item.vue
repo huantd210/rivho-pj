@@ -17,7 +17,6 @@
       </div>
       <div class="gantt__machine-item__right">
         <span>{{ machine.name }}</span>
-        <span>{{ machine.describe }}</span>
       </div>
     </div>
   </div>
