@@ -38,7 +38,6 @@ export default {
   color: var(--color);
   background-color: #222f3e;
   border-radius: 4px;
-  font-size: 16px;
   cursor: pointer;
   --color: #01a3a4;
 }

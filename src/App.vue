@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import { WINDOW_RESIZE } from "./store/constants/actionTypes";
 import TopBar from "./components/TopBar/Main";
 import Order from "./components/Order/Main";
 import Gantt from "./components/Gantt/Main";
@@ -41,6 +43,25 @@ export default {
     OrderEdit,
     MachineCreate,
     MachineEdit,
+  },
+
+  methods: {
+    onResize() {
+      console.log("B", window.innerWidth);
+
+      this.$store.dispatch(WINDOW_RESIZE, {
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
+      });
+    },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      window.addEventListener("resize", this.onResize);
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.onResize);
   },
 };
 </script>
@@ -61,29 +82,36 @@ export default {
 }
 
 #app {
-  width: 100vw;
   height: 100vh;
+  min-width: 1000px;
   text-align: center;
   font-size: 16px;
   background-color: #222f3e;
   color: #ffffff;
+  display: grid;
+  grid-template-rows: 60px minmax(90vh, auto);
 }
 
 .app__header {
+  height: 100%;
+  width: 100%;
   padding: 8px 12px;
+  min-width: 1000px;
+  grid-row: 1 / 2;
 }
 
 .app__main {
-  height: 90vh;
-  width: 100vw;
+  min-width: 1000px;
+  height: 100%;
   padding: 8px 12px;
+  grid-row: 2 / 3;
 }
 
 .app__main__wrapper {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: minmax(200px, 20%) minmax(500px, 80%);
   grid-template-rows: 100%;
 }
 
@@ -100,6 +128,16 @@ export default {
   padding-top: 1px;
   background-color: #576574;
   grid-column: 2 / 3;
+}
+
+.app__dialog {
+  width: 100%;
+}
+
+.el-dialog__wrapper {
+  margin: auto;
+  width: 100%;
+  overflow: hidden;
 }
 
 /* Scroll */
@@ -202,12 +240,28 @@ export default {
 .el-popover,
 .el-picker-panel {
   background-color: #222f3e;
+  border-color: #576574;
 }
 
 .el-popper[x-placement^="top"] .popper__arrow::after,
 .el-popper[x-placement^="bottom"] .popper__arrow::after {
   border-top-color: #222f3e;
   border-bottom-color: #222f3e;
+}
+
+.el-picker-panel {
+  border-color: #222f3e;
+}
+
+.el-picker-panel__footer {
+  border-bottom-color: #222f3e;
+  background-color: #222f3e;
+}
+
+.el-date-picker__time-header,
+.el-date-picker__header,
+.el-picker-panel__footer {
+  border-color: #576574;
 }
 
 .el-dialog {
@@ -225,5 +279,15 @@ export default {
 
 .el-form-item__label {
   color: #01a3a4;
+}
+
+.el-date-table th {
+  border-color: #576574;
+}
+
+@media screen and (max-width: 320px) {
+  #app {
+    font-size: calc(16px + 6 * ((100vw - 320px) / 680));
+  }
 }
 </style>

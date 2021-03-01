@@ -79,7 +79,7 @@ export default {
       end: 21, // end at 9 PM
       slice: 4, // slice 1/4 hour
       width: 30,
-      height: 90,
+      height: 45,
     };
   },
   async created() {

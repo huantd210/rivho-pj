@@ -4,19 +4,8 @@
       <span>オーダーリスト</span>
     </div>
     <div class="order-search__right">
-      <div class="order-search__input">
-        <div class="order-search__input__prefix">
-          <i
-            class="el-icon-edit"
-            :style="{ color: '#01a3a4', 'font-size': '16px' }"
-          />
-        </div>
-        <div class="order-search__input__main">
-          <input type="text" v-model="terms" placeholder="かいたく" />
-        </div>
-      </div>
       <div class="order-search__action">
-        <el-button-custom :style="{ padding: '2px 10px', margin: 0 }">
+        <el-button-custom :style="{ padding: '6px 12px', margin: 0 }">
           <i class="el-icon-search" />
         </el-button-custom>
       </div>

@@ -3,12 +3,12 @@
     class="order-item"
     :style="{ 'background-color': order.color || '#1dd1a1' }"
   >
-    <div class="order-item__wrapper">
+    <div class="order-item__wrapper" :style="getStyleOrder">
       <div class="order-item__describe">
-        <span>{{ order.name }}</span>
-        <span>{{ order.describe }}</span>
-        <span>{{ getStringTimeStart }}</span>
-        <span>{{ getStringTimeEnd }}</span>
+        <span>ｵｰﾀﾞｰｺｰﾄﾞ: {{ order.machineCode }}</span>
+        <span>顧客名: {{ order.name }}</span>
+        <span>数量: {{ order.quantity }}</span>
+        <span>生産納期: {{ getStringTimeStart }}</span>
       </div>
       <div class="order-item__action">
         <el-button-custom :style="{ padding: '2px' }" @click="handleEditOrder">
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import {
   ORDER_CHANGE_VISIBLE_EDIT,
   ORDER_DELETE_ORDER,
@@ -62,11 +63,23 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(["getWindow"]),
     getStringTimeStart() {
-      return this.order.startAt.format("DD MM YYYY HH:mm:ss");
+      return this.order.startAt.format("YYYY/MM/DD");
     },
     getStringTimeEnd() {
-      return this.order.endAt.format("DD MM YYYY HH:mm:ss");
+      return this.order.endAt.format("YYYY/MM/DD");
+    },
+    getStyleOrder() {
+      let styleOrder = {
+        height: this.getWindow.width <= 1000 ? "80px" : "110px",
+      };
+
+      if (this.getWindow.width <= 1000) {
+        styleOrder.fontSize = "12px";
+      }
+
+      return styleOrder;
     },
   },
   methods: {
@@ -106,7 +119,6 @@ export default {
 
 .order-item__wrapper {
   width: 100%;
-  height: 110px;
   padding-top: 2px;
   border-bottom: 2px solid #b33939;
   overflow: hidden;
