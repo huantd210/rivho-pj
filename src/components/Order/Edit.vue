@@ -3,28 +3,37 @@
     <el-dialog
       title="New Order"
       :visible.sync="isVisibleDialog"
-      width="30%"
+      :width="getStyleDialog.width"
       @open="handleOpenDialog"
       @close="handleCloseDialog"
     >
       <el-form
         ref="formOrderEdit"
         :model="orderEdit"
+        :label-position="getStyleDialog.labelPosition"
         :rules="rules"
         label-width="110px"
       >
-        <el-form-item label="Machine code" prop="machineCode">
+        <el-form-item
+          label="Machine"
+          class="el-form-item--align-left"
+          prop="machineCode"
+        >
           <el-input
             v-model="orderEdit.machineCode"
             :clearable="true"
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="Name" prop="name">
+        <el-form-item label="Name" class="el-form-item--align-left" prop="name">
           <el-input v-model="orderEdit.name" :clearable="true"></el-input>
         </el-form-item>
 
-        <el-form-item label="Time start" prop="startAt">
+        <el-form-item
+          label="Time start"
+          class="el-form-item--align-left"
+          prop="startAt"
+        >
           <el-date-picker
             type="datetime"
             placeholder="Select date and time start"
@@ -35,7 +44,11 @@
           >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="Time end" prop="endAt">
+        <el-form-item
+          label="Time end"
+          class="el-form-item--align-left"
+          prop="endAt"
+        >
           <el-date-picker
             type="datetime"
             placeholder="Select date and time end"
@@ -55,7 +68,11 @@
           <el-color-picker v-model="orderEdit.color"></el-color-picker>
         </el-form-item>
 
-        <el-form-item label="Describe" prop="describe">
+        <el-form-item
+          label="Describe"
+          class="el-form-item--align-left"
+          prop="describe"
+        >
           <el-input
             type="textarea"
             :rows="2"
@@ -97,6 +114,7 @@ export default {
     "el-button-custom": Button,
   },
   computed: {
+    ...mapGetters(["getWindow"]),
     ...mapGetters("order", ["getVisibleDialogEdit", "getOrderEdit"]),
     getDefaultTimeStart() {
       let timeStart = moment().set({ hour: 9, minute: 0, second: 0 });
@@ -113,6 +131,19 @@ export default {
       set(isVisibleDialog) {
         return isVisibleDialog;
       },
+    },
+    getStyleDialog() {
+      let styleDialog = {
+        width: "30%",
+        labelPosition: "left",
+      };
+
+      if (this.getWindow.width <= 1000) {
+        styleDialog.width = "80%";
+        styleDialog.labelPosition = "top";
+      }
+
+      return styleDialog;
     },
   },
   methods: {

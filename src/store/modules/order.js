@@ -91,7 +91,7 @@ export default {
               let orderItem = {
                 id: order.id,
                 name: order.name,
-                describe: order.describe,
+                quantity: order.quantity,
                 color: order.color,
                 startAt: moment(
                   new Date(order.start_at),

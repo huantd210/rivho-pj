@@ -14,6 +14,7 @@
           placeholder="Machine"
           size="small"
           popper-class="popper-for-input"
+          :style="{ width: '120px' }"
           @change="handleSelectCodeFilterMachine"
         >
           <el-option key="'item-non" label="All" value=""> </el-option>
@@ -36,6 +37,7 @@
           placeholder="Pick a day"
           @change="handleInputDateOrderFilter"
           size="small"
+          :style="{ width: '140px' }"
           popper-class="popper-for-input"
         >
         </el-date-picker>
@@ -75,6 +77,7 @@ export default {
     "el-modal": Modal,
   },
   computed: {
+    ...mapGetters(["getWindow"]),
     ...mapGetters("machine", ["getCodeMachineList"]),
   },
   methods: {
@@ -125,6 +128,8 @@ export default {
 
 <style scoped>
 .top-bar {
+  height: 100%;
+  width: 100%;
   display: flex;
 }
 
