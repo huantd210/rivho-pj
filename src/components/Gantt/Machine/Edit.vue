@@ -3,7 +3,7 @@
     <el-dialog
       title="Edit Machine"
       :visible.sync="isVisibleDialog"
-      width="30%"
+      :width="getStyleDialog.width"
       @open="handleOpenDialog"
       @close="handleCloseDialog"
     >
@@ -62,6 +62,7 @@ export default {
     "el-button-custom": Button,
   },
   computed: {
+    ...mapGetters(["getWindow"]),
     ...mapGetters("machine", ["getMachineEdit", "getVisibleDialogEdit"]),
     isVisibleDialog: {
       get() {
@@ -70,6 +71,19 @@ export default {
       set(isVisibleDialog) {
         return isVisibleDialog;
       },
+    },
+    getStyleDialog() {
+      let styleDialog = {
+        width: "30%",
+        labelPosition: "left",
+      };
+
+      if (this.getWindow.width <= 1000) {
+        styleDialog.width = "80%";
+        styleDialog.labelPosition = "top";
+      }
+
+      return styleDialog;
     },
   },
   methods: {
