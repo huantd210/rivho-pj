@@ -12,8 +12,8 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
-    host: process.env.VUE_APP_LOCALHOST || "localhost", // can be overwritten by process.env.HOST
-    port: process.env.VUE_APP_PORT || 8000, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    host: process.env.VUE_APP_LOCALHOST || "0.0.0.0", // can be overwritten by process.env.HOST
+    port: process.env.VUE_APP_PORT || 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
