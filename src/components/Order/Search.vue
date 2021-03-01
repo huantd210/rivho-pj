@@ -6,7 +6,7 @@
     <div class="order-search__right">
       <div class="order-search__action">
         <el-button-custom :style="{ padding: '6px 12px', margin: 0 }">
-          <i class="el-icon-search" />
+          検索
         </el-button-custom>
       </div>
     </div>

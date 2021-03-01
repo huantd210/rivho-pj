@@ -4,11 +4,23 @@
     :style="{ 'background-color': order.color || '#1dd1a1' }"
   >
     <div class="order-item__wrapper" :style="getStyleOrder">
+      <div class="order-item__extend">
+        <div class="order-item__extend__warning">
+          <i class="el-icon-warning"></i>
+        </div>
+        <el-button-custom
+          :style="{ padding: '2px' }"
+          @click="handleChangeVisibleProcessList"
+        >
+          <i v-if="isVisibleProcessList" class="el-icon-caret-top"></i>
+          <i v-else class="el-icon-caret-bottom"></i>
+        </el-button-custom>
+      </div>
       <div class="order-item__describe">
-        <span>ｵｰﾀﾞｰｺｰﾄﾞ: {{ order.machineCode }}</span>
-        <span>顧客名: {{ order.name }}</span>
-        <span>数量: {{ order.quantity }}</span>
-        <span>生産納期: {{ getStringTimeStart }}</span>
+        <span>物件ID: {{ order.id }}</span>
+        <span>検索: {{ order.machineCode }}</span>
+        <span>F番: {{ order.name }}</span>
+        <span>入荷日: {{ getStringTimeStart }}</span>
       </div>
       <div class="order-item__action">
         <el-button-custom :style="{ padding: '2px' }" @click="handleEditOrder">
@@ -23,14 +35,6 @@
             <i class="el-icon-delete"></i>
           </el-button-custom>
         </el-popconfirm>
-
-        <el-button-custom
-          :style="{ padding: '2px' }"
-          @click="handleChangeVisibleProcessList"
-        >
-          <i v-if="isVisibleProcessList" class="el-icon-caret-top"></i>
-          <i v-else class="el-icon-caret-bottom"></i>
-        </el-button-custom>
       </div>
     </div>
     <div v-if="isVisibleProcessList" class="order-item__list-process">
@@ -125,9 +129,22 @@ export default {
   display: flex;
 }
 
+.order-item__extend {
+  padding-bottom: 3px;
+  padding-right: 6px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
 .order-item__describe {
   text-align: left;
   flex-grow: 1;
+}
+
+.order-item__extend .order-item__extend__warning {
+  color: #feca57;
+  font-size: 22px;
 }
 
 .order-item__describe span {

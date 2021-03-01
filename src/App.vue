@@ -130,14 +130,14 @@ export default {
   grid-column: 2 / 3;
 }
 
-.app__dialog {
-  width: 100%;
-}
-
 .el-dialog__wrapper {
   margin: auto;
   width: 100%;
   overflow: hidden;
+}
+
+.app__dialog {
+  width: 100%;
 }
 
 /* Scroll */
