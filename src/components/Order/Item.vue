@@ -26,9 +26,9 @@
       </div>
       <div class="order-item__describe">
         <span>物件ID: {{ order.id }}</span>
-        <span>得意先名: {{ order.machineCode }}</span>
-        <span>F番: {{ order.quantity }}</span>
-        <span>入荷日: {{ getStringTimeStart }}</span>
+        <span>得意先名: {{ order.customerName }}</span>
+        <span>F番: {{ order.fNumber }}</span>
+        <span>入荷日: {{ order.importDate.format("YYYY/MM/DD") }}</span>
       </div>
       <div class="order-item__action">
         <el-button-custom :style="{ padding: '2px' }" @click="handleEditOrder">
@@ -51,45 +51,42 @@
       :style="{ backgroundColor: order.color }"
     >
       <div class="order-item__list-process__describe">
-        <span> 品名：NNNNNNNNNNNNNNNNNNNN</span>
-        <span>数量：9,999,999</span>
-        <span>納期：2021/01/01</span>
+        <span> 品名：{{ order.productName }}</span>
+        <span>数量：{{ order.quantity.toLocaleString("ja-JP") }}</span>
+        <span>納期：{{ order.exportDate.format("YYYY/MM/DD") }}</span>
       </div>
       <div class="order-item__list-process__table">
         <div class="order-item__list-process__table">
           <div class="order-item__list-process__table-title">
-            <span :style="{ fontSize: '9px' }">スケジュール状態</span>
+            <span>スケジュール状態</span>
             <span>機械</span>
             <span>ファイル区分</span>
             <span>数量</span>
           </div>
           <div class="order-item__list-process__table-body">
             <div class="order-item__list-process__table-body__group">
-              <div class="order-item__list-process__table-body__row">
-                <span>完</span>
-                <span>NNNNNNN</span>
-                <span>NNNNNNN</span>
-                <span>999999</span>
-              </div>
-              <div class="order-item__list-process__table-body__row">
-                <span>完</span>
-                <span>NNNNNNN</span>
-                <span>NNNNNNN</span>
-                <span>999999</span>
+              <div
+                v-for="item in getNotYetProcessList"
+                :key="item.id"
+                class="order-item__list-process__table-body__row"
+              >
+                <span>{{ item.status }}</span>
+                <span>{{ item.machineId }}</span>
+                <span>{{ item.fileField }}</span>
+                <span>{{ item.quantity.toLocaleString("ja-JP") }}</span>
               </div>
             </div>
+
             <div class="order-item__list-process__table-body__group">
-              <div class="order-item__list-process__table-body__row">
-                <span>完</span>
-                <span>NNNNNNN</span>
-                <span>NNNNNNN</span>
-                <span>999999</span>
-              </div>
-              <div class="order-item__list-process__table-body__row">
-                <span>完</span>
-                <span>NNNNNNN</span>
-                <span>NNNNNNN</span>
-                <span>999999</span>
+              <div
+                v-for="item in getDoneProcessList"
+                :key="item.id"
+                class="order-item__list-process__table-body__row"
+              >
+                <span>{{ item.status }}</span>
+                <span>{{ item.machineId }}</span>
+                <span>{{ item.fileField }}</span>
+                <span>{{ item.quantity }}</span>
               </div>
             </div>
           </div>
@@ -120,12 +117,6 @@ export default {
   },
   computed: {
     ...mapGetters(["getWindow"]),
-    getStringTimeStart() {
-      return this.order.startAt.format("YYYY/MM/DD");
-    },
-    getStringTimeEnd() {
-      return this.order.endAt.format("YYYY/MM/DD");
-    },
     getStyleOrder() {
       let styleOrder = {
         height: this.getWindow.width <= 1000 ? "80px" : "110px",
@@ -136,6 +127,24 @@ export default {
       }
 
       return styleOrder;
+    },
+    getDoneProcessList() {
+      let doneProcessList = [];
+      if (this.order.processList && this.order.processList.length > 0) {
+        doneProcessList = this.order.processList.filter(
+          (process) => process.status === "完"
+        );
+      }
+      return doneProcessList;
+    },
+    getNotYetProcessList() {
+      let notYetProcessList = [];
+      if (this.order.processList && this.order.processList.length > 0) {
+        notYetProcessList = this.order.processList.filter(
+          (process) => process.status === "未"
+        );
+      }
+      return notYetProcessList;
     },
   },
   methods: {
@@ -215,7 +224,9 @@ export default {
 
 .order-item__list-process {
   text-align: left;
-  padding-left: 35px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
 }
 
 .order-item__list-process li {
@@ -253,6 +264,6 @@ export default {
 .order-item__list-process__table-body__row span {
   flex: 1;
   text-align: center;
-  font-size: 12px;
+  font-size: 10px;
 }
 </style>

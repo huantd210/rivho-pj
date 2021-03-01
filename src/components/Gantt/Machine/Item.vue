@@ -3,7 +3,7 @@
     <div class="gantt__machine-item__wrapper">
       <div class="gantt__machine-item__left">
         <div class="gantt__machine-item__left__label">
-          <span>{{ machine.code }}</span>
+          <span>{{ machine.id }}</span>
         </div>
         <div class="gantt__machine-item__left__action">
           <el-button-custom

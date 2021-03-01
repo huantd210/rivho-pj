@@ -20,8 +20,8 @@
     <div id="chart-list" ref="ganttChartList" class="gantt__chart-list">
       <machine-list
         :styleLabel="{
-          minHeight: height * 2 + 'px',
-          height: height * 2 + 'px',
+          minHeight: height + 'px',
+          height: height + 'px',
         }"
       ></machine-list>
       <div class="gantt__chart-list__virtual-scroll"></div>
@@ -79,7 +79,7 @@ export default {
       end: 21, // end at 9 PM
       slice: 4, // slice 1/4 hour
       width: 30,
-      height: 45,
+      height: 90,
     };
   },
   async created() {

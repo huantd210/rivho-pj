@@ -12,10 +12,6 @@
         :rules="rules"
         label-width="110px"
       >
-        <el-form-item label="Code" prop="code">
-          <el-input v-model="machineCreate.code" :clearable="true"></el-input>
-        </el-form-item>
-
         <el-form-item label="Name" prop="name">
           <el-input v-model="machineCreate.name" :clearable="true"></el-input>
         </el-form-item>
@@ -115,15 +111,11 @@ export default {
     return {
       machineCreate: {
         name: "",
-        code: "",
         describe: "",
       },
       rules: {
         name: [
           { required: true, message: "Please input Name", trigger: "blur" },
-        ],
-        code: [
-          { required: true, message: "Please input Code", trigger: "blur" },
         ],
         describe: [{ required: false }],
       },

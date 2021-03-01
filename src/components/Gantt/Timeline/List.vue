@@ -73,16 +73,16 @@ export default {
   },
   computed: {
     ...mapGetters("machine", ["getMachineListByFilter"]),
-    ...mapGetters("order", ["getOrderListByFilter", "getFilterOrder"]),
+    ...mapGetters("order", ["getFilterOrder", "getProcessListByFilter"]),
     getTimelineList() {
       let timelineList = [];
       let timePerBlock = 60 / this.slice; // 60 / 4 minutes
 
       if (
         this.getMachineListByFilter &&
-        this.getOrderListByFilter &&
         this.getMachineListByFilter.length > 0 &&
-        this.getOrderListByFilter.length > 0 &&
+        this.getProcessListByFilter &&
+        this.getProcessListByFilter.length > 0 &&
         this.getFilterOrder &&
         this.getFilterOrder.date !== ""
       ) {
@@ -98,14 +98,13 @@ export default {
 
         timelineList = this.getMachineListByFilter.map((machine) => {
           let timelineItem = {
-            id: machine.id,
-            code: machine.code,
+            ...machine,
             blocks: [],
           };
 
-          timelineItem.blocks = this.getOrderListByFilter.reduce(
-            (blockList, curOrder) => {
-              if (curOrder.machineCode === machine.code) {
+          timelineItem.blocks = this.getProcessListByFilter.reduce(
+            (blockList, curProcess) => {
+              if (curProcess.machineId === machine.id) {
                 let gridCol = { x: 1, y: 2 };
                 let gridRow = { x: 1, y: 2 };
 
@@ -114,70 +113,74 @@ export default {
                   left: "0px",
                 };
 
-                if (curOrder.endAt <= dateStart) {
+                if (curProcess.endAt <= dateStart) {
                   gridCol.x = this.min;
                   gridCol.y = this.min;
-                } else if (curOrder.startAt >= dateEnd) {
+                } else if (curProcess.startAt >= dateEnd) {
                   gridCol.x = this.max + 1;
                   gridCol.y = this.max + 1;
                 } else if (
-                  curOrder.startAt <= dateStart &&
-                  curOrder.endAt >= dateEnd
+                  curProcess.startAt <= dateStart &&
+                  curProcess.endAt >= dateEnd
                 ) {
                   gridCol.x = this.min + 1;
                   gridCol.y = this.max + 1;
                 } else if (
-                  curOrder.startAt <= dateStart &&
-                  curOrder.endAt < dateEnd
+                  curProcess.startAt <= dateStart &&
+                  curProcess.endAt < dateEnd
                 ) {
                   gridCol.x = this.min + 1;
                   gridCol.y =
                     Math.floor(
-                      curOrder.endAt.diff(dateStart, "minutes") / timePerBlock
+                      curProcess.endAt.diff(dateStart, "minutes") / timePerBlock
                     ) + 1;
 
                   blockStyleCustom.width =
-                    (curOrder.endAt.diff(dateStart, "minutes") / timePerBlock) *
-                      this.width +
-                    "px";
-                } else if (
-                  curOrder.startAt > dateStart &&
-                  curOrder.endAt < dateEnd
-                ) {
-                  let tempX =
-                    curOrder.startAt.diff(dateStart, "minutes") / timePerBlock;
-                  gridCol.x = Math.floor(tempX) + 1;
-                  gridCol.y =
-                    Math.floor(
-                      curOrder.endAt.diff(dateStart, "minutes") / timePerBlock
-                    ) + 1;
-
-                  blockStyleCustom.left =
-                    (tempX - Math.floor(tempX)) * this.width + "px";
-                  blockStyleCustom.width =
-                    (curOrder.endAt.diff(curOrder.startAt, "minutes") /
+                    (curProcess.endAt.diff(dateStart, "minutes") /
                       timePerBlock) *
                       this.width +
                     "px";
                 } else if (
-                  curOrder.startAt > dateStart &&
-                  curOrder.endAt >= dateEnd
+                  curProcess.startAt > dateStart &&
+                  curProcess.endAt < dateEnd
                 ) {
                   let tempX =
-                    curOrder.startAt.diff(dateStart, "minutes") / timePerBlock;
+                    curProcess.startAt.diff(dateStart, "minutes") /
+                    timePerBlock;
+                  gridCol.x = Math.floor(tempX) + 1;
+                  gridCol.y =
+                    Math.floor(
+                      curProcess.endAt.diff(dateStart, "minutes") / timePerBlock
+                    ) + 1;
+
+                  blockStyleCustom.left =
+                    (tempX - Math.floor(tempX)) * this.width + "px";
+                  blockStyleCustom.width =
+                    (curProcess.endAt.diff(curProcess.startAt, "minutes") /
+                      timePerBlock) *
+                      this.width +
+                    "px";
+                } else if (
+                  curProcess.startAt > dateStart &&
+                  curProcess.endAt >= dateEnd
+                ) {
+                  let tempX =
+                    curProcess.startAt.diff(dateStart, "minutes") /
+                    timePerBlock;
                   gridCol.x = Math.floor(tempX) + 1;
                   gridCol.y = this.max + 1;
 
                   blockStyleCustom.left =
                     (tempX - Math.floor(tempX)) * this.width + "px";
                   blockStyleCustom.width =
-                    (dateEnd.diff(curOrder.startAt, "minutes") / timePerBlock) *
+                    (dateEnd.diff(curProcess.startAt, "minutes") /
+                      timePerBlock) *
                       this.width +
                     "px";
                 }
 
                 let blockItem = {
-                  order: curOrder,
+                  process: curProcess,
                   gridCol,
                   gridRow,
                   blockStyleCustom,

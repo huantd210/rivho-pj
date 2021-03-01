@@ -8,19 +8,9 @@
       <div
         v-for="index in columns"
         :key="'row-top' + index"
-        class="gantt__timeline-item__grid__cell--non cell--border-bottom"
-        :style="{
-          ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 }),
-          ...styleCell,
-        }"
-      ></div>
-
-      <div
-        v-for="index in columns"
-        :key="'row-bottom' + index"
         class="gantt__timeline-item__grid__cell--non"
         :style="{
-          ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 2, y: 3 }),
+          ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 }),
           ...styleCell,
         }"
       ></div>
@@ -44,16 +34,6 @@
         class="gantt__timeline-item__grid__cell--non"
         :style="{
           ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 1, y: 2 }),
-          ...styleCell,
-        }"
-      ></div>
-
-      <div
-        v-for="index in columns"
-        :key="'row-bottom' + index"
-        class="gantt__timeline-item__grid__cell--non"
-        :style="{
-          ...getBlockGridPosition({ x: index, y: index + 1 }, { x: 2, y: 3 }),
           ...styleCell,
         }"
       ></div>
@@ -88,7 +68,7 @@ export default {
     gridStyle() {
       return {
         gridTemplateColumns: `repeat(${this.columns}, ${this.styleCell.width})`,
-        gridTemplateRows: `repeat(2, ${this.styleCell.height}`,
+        gridTemplateRows: `repeat(1, ${this.styleCell.height}`,
       };
     },
   },
@@ -128,8 +108,7 @@ export default {
 }
 
 .gantt__timeline-item__grid__cell--has-data:hover {
-  opacity: 0.95;
-  border: 1px solid #222f3e;
+  opacity: 0.9;
   box-shadow: rgba(60, 64, 67, 0.3) 0 1px 2px0,
     rgba(60, 64, 67, 0.15) 0 2px 6px 2px;
   z-index: 999;

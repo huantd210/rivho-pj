@@ -9,20 +9,20 @@
           <span>工程</span>
         </div>
         <el-select
-          v-model="codeFilterMachine"
+          v-model="idFilterProcess"
           filterable
-          placeholder="Machine"
+          placeholder="工程"
           size="small"
           popper-class="popper-for-input"
           :style="{ width: '120px' }"
-          @change="handleSelectCodeFilterMachine"
+          @change="handleSelectIdFilterProcess"
         >
           <el-option key="'item-non" label="すべて" value=""> </el-option>
           <el-option
-            v-for="item in getCodeMachineList"
-            :key="item.id"
-            :label="item.code"
-            :value="item.code"
+            v-for="item in getProcessIdList"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
@@ -43,13 +43,31 @@
         </el-date-picker>
 
         <div class="top-bar__navigation__select-day">
-          <span class="top-bar__navigation__select-day__btn">
+          <span
+            class="top-bar__navigation__select-day__btn-double"
+            @click="increaseDateFilterOrder(-2)"
+          >
             <i class="el-icon-d-arrow-left"></i>
-            <i class="el-icon-caret-left"></i>
           </span>
-          <span>{{ getDayFilterDate }}</span>
-          <span class="top-bar__navigation__select-day__btn">
-            <i class="el-icon-caret-right"></i>
+          <span
+            class="top-bar__navigation__select-day__btn"
+            @click="increaseDateFilterOrder(-1)"
+          >
+            <i class="el-icon-arrow-left"></i>
+          </span>
+          <span class="top-bar__navigation__select-day__text">{{
+            getDayFilterDate
+          }}</span>
+          <span
+            class="top-bar__navigation__select-day__btn"
+            @click="increaseDateFilterOrder(1)"
+          >
+            <i class="el-icon-arrow-right"></i>
+          </span>
+          <span
+            class="top-bar__navigation__select-day__btn-double"
+            @click="increaseDateFilterOrder(2)"
+          >
             <i class="el-icon-d-arrow-right"></i>
           </span>
         </div>
@@ -65,7 +83,7 @@
           popper-class="popper-for-input"
           :style="{ width: '140px' }"
         >
-          <el-option key="'item-non" label="NNNNNNNN" value=""> </el-option>
+          <el-option key="'item-non" label="NNNNNN" value=""> </el-option>
         </el-select>
       </div>
 
@@ -92,7 +110,7 @@ import Modal from "../UI/Modal";
 import {
   ORDER_CHANGE_FILTER_ORDER,
   ORDER_CHANGE_VISIBLE_CREATE,
-  MACHINE_CHANGE_FILTER_MACHINE,
+  ORDER_CHANGE_FILTER_PROCESS,
   MACHINE_CHANGE_VISIBLE_CREATE,
 } from "../../store/constants/actionTypes";
 
@@ -105,11 +123,10 @@ export default {
   computed: {
     ...mapGetters(["getWindow"]),
     ...mapGetters("machine", ["getCodeMachineList"]),
-    ...mapGetters("order", ["getFilterOrder"]),
+    ...mapGetters("order", ["getFilterOrder", "getProcessIdList"]),
     getDayFilterDate() {
-      console.log(this.getFilterOrder.date);
       if (this.getFilterOrder && this.getFilterOrder.date) {
-        return this.getFilterOrder.date.day();
+        return this.getFilterOrder.date.date();
       }
 
       return "日";
@@ -125,10 +142,10 @@ export default {
         });
       }
     },
-    handleSelectCodeFilterMachine() {
-      this.$store.dispatch(`machine/${MACHINE_CHANGE_FILTER_MACHINE}`, {
-        filterMachine: {
-          code: this.codeFilterMachine,
+    handleSelectIdFilterProcess() {
+      this.$store.dispatch(`order/${ORDER_CHANGE_FILTER_PROCESS}`, {
+        filterProcess: {
+          id: this.idFilterProcess,
         },
       });
     },
@@ -145,11 +162,21 @@ export default {
     handleRefreshWebApp() {
       location.reload();
     },
+    increaseDateFilterOrder(num) {
+      if (this.dateFilterOrder) {
+        this.dateFilterOrder = this.getFilterOrder.date.add(num, "days");
+        this.$store.dispatch(`order/${ORDER_CHANGE_FILTER_ORDER}`, {
+          filterOrder: {
+            date: moment(new Date(this.dateFilterOrder), "YYYY-MM-DD"),
+          },
+        });
+      }
+    },
   },
   data() {
     return {
-      dateFilterOrder: moment("2021-02-28").format("YYYY-MM-DD"),
-      codeFilterMachine: "",
+      dateFilterOrder: moment().format("YYYY-MM-DD"),
+      idFilterProcess: "",
       scaleValue: "",
     };
   },
@@ -196,9 +223,10 @@ export default {
 }
 
 .top-bar__navigation__select-day {
-  width: 100px;
+  width: 120px;
   height: 32px;
-  margin-left: 10px;
+  margin-left: 15px;
+  font-size: 14px;
   border: 1px solid #01a3a4;
   border-bottom-width: 2px;
   border-radius: 4px;
@@ -207,7 +235,12 @@ export default {
   align-items: center;
 }
 
-.top-bar__navigation__select-day__btn {
+.top-bar__navigation__select-day__text {
+  flex: 1;
+}
+
+.top-bar__navigation__select-day__btn,
+.top-bar__navigation__select-day__btn-double {
   height: 100%;
   flex: 1;
   display: flex;
@@ -215,13 +248,14 @@ export default {
   align-items: center;
 }
 
-.top-bar__navigation__select-day__btn:hover {
+.top-bar__navigation__select-day__btn:hover,
+.top-bar__navigation__select-day__btn-double:hover {
   opacity: 0.5;
 }
 
 .top-bar__navigation__select,
 .top-bar__navigation__filter-date {
-  margin-right: 20px;
+  margin-right: 15px;
   display: flex;
   justify-content: center;
   align-items: center;

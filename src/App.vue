@@ -109,7 +109,7 @@ export default {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(200px, 20%) minmax(500px, 80%);
+  grid-template-columns: minmax(200px, 25%) minmax(500px, 75%);
   grid-template-rows: 100%;
 }
 

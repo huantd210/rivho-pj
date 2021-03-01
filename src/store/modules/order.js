@@ -7,7 +7,9 @@ import {
   ORDER_CHANGE_VISIBLE_EDIT,
   ORDER_CREATE_ORDER,
   ORDER_EDIT_ORDER,
-  ORDER_DELETE_ORDER
+  ORDER_DELETE_ORDER,
+  ORDER_CHANGE_FILTER_PROCESS,
+  ORDER_DELETE_PROCESS
 } from "../constants/actionTypes";
 import axios from "../../config/axios";
 
@@ -16,7 +18,13 @@ export default {
   state: () => {
     return {
       orderList: [],
-      filterOrder: "",
+      filterOrder: {
+        date: "",
+        processId: ""
+      },
+      filterProcess: {
+        id: ""
+      },
       orderEdit: "",
       isVisibleDialogCreate: false,
       isVisibleDialogEdit: false
@@ -27,26 +35,78 @@ export default {
     getOrderListByFilter: state => {
       if (state.filterOrder && state.filterOrder.date !== "") {
         let dateFilter = moment(state.filterOrder.date.format("YYYY-MM-DD"));
-        return state.orderList.reduce((arrOrder, curOrder) => {
-          let orderStart = moment(curOrder.startAt.format("YYYY-MM-DD"));
-          let orderEnd = moment(curOrder.endAt.format("YYYY-MM-DD"));
+
+        let orderLisFilter = state.orderList.reduce((arrOrder, curOrder) => {
+          let importDate = moment(curOrder.importDate.format("YYYY-MM-DD"));
+          let exportDate = moment(curOrder.exportDate.format("YYYY-MM-DD"));
 
           if (
-            orderStart.isSame(dateFilter) ||
-            orderEnd.isSame(dateFilter) ||
-            (orderStart.isBefore(dateFilter) && orderEnd.isAfter(dateFilter))
+            importDate.isSame(dateFilter) ||
+            exportDate.isSame(dateFilter) ||
+            (importDate.isBefore(dateFilter) && exportDate.isAfter(dateFilter))
           ) {
             arrOrder.push(curOrder);
           }
 
           return arrOrder;
         }, []);
+
+        return orderLisFilter;
       }
 
       return [];
     },
-    getNameOrderList: state => state.orderList.map(order => order.name),
+    getProcessList: (state, getters) => {
+      let processScheduleList = []; // get all process list
+      if (
+        getters.getOrderListByFilter &&
+        getters.getOrderListByFilter.length > 0
+      ) {
+        processScheduleList = getters.getOrderListByFilter.reduce(
+          (arrProcess, curOrder) => {
+            if (
+              curOrder &&
+              curOrder.processList &&
+              curOrder.processList.length > 0
+            ) {
+              let processListPerOrder = curOrder.processList.map(curProcess => {
+                let processScheduleItem = {
+                  name: curOrder.id + "/" + curOrder.productName,
+                  color: curOrder.color,
+                  orderId: curOrder.id,
+                  ...curProcess
+                };
+
+                return processScheduleItem;
+              });
+
+              arrProcess = arrProcess.concat(processListPerOrder);
+            }
+
+            return arrProcess;
+          },
+          []
+        );
+      }
+      return processScheduleList;
+    },
+    getProcessListByFilter: (state, getters) => {
+      let processScheduleList = getters.getProcessList;
+      if (state.filterProcess && state.filterProcess.id) {
+        processScheduleList = getters.getProcessList.filter(
+          process => process.id === state.filterProcess.id
+        );
+      }
+
+      return processScheduleList;
+    },
     getFilterOrder: state => state.filterOrder,
+    getFilterProcess: state => state.filterProcess,
+    getProcessIdList: (state, getters) => {
+      let processIdList = getters.getProcessList.map(process => process.id);
+      processIdList = [...new Set(processIdList)];
+      return processIdList;
+    },
     getOrderEdit: state => state.orderEdit,
     getVisibleDialogCreate: state => state.isVisibleDialogCreate,
     getVisibleDialogEdit: state => state.isVisibleDialogEdit
@@ -79,6 +139,23 @@ export default {
       state.orderList = state.orderList.filter(
         order => order.id !== payload.orderId
       );
+    },
+    [ORDER_CHANGE_FILTER_PROCESS](state, payload) {
+      state.filterProcess = payload.filterProcess;
+    },
+    [ORDER_DELETE_PROCESS](state, payload) {
+      state.orderList = state.orderList.map(order => {
+        if (
+          order.id === payload.orderId &&
+          order.processList &&
+          order.processList.length > 0
+        ) {
+          order.processList = order.processList.filter(
+            process => process.id !== payload.processId
+          );
+        }
+        return order;
+      });
     }
   },
   actions: {
@@ -90,16 +167,35 @@ export default {
             let orderList = result.data.map(order => {
               let orderItem = {
                 id: order.id,
-                name: order.name,
-                quantity: order.quantity,
+                customerName: order.customer_name,
+                fNumber: order.f_number,
                 color: order.color,
-                startAt: moment(
-                  new Date(order.start_at),
-                  "DD MM YYYY HH:mm:ss"
-                ),
-                endAt: moment(new Date(order.end_at), "DD MM YYYY HH:mm:ss"),
-                machineCode: order.machine_code
+                importDate: moment(new Date(order.import_date), "YYYY-MM-DD"),
+                exportDate: moment(new Date(order.export_date), "YYYY-MM-DD"),
+                productName: order.product_name,
+                quantity: order.quantity,
+                processList: []
               };
+
+              if (order.process_list.length > 0) {
+                orderItem.processList = order.process_list.map(process => {
+                  return {
+                    id: process.file_field,
+                    status: process.status,
+                    machineId: process.machine_id,
+                    fileField: process.file_field,
+                    quantity: process.quantity,
+                    startAt: moment(
+                      new Date(process.start_at),
+                      "YYYY-MM-DD HH:mm:ss"
+                    ),
+                    endAt: moment(
+                      new Date(process.end_at),
+                      "YYYY-MM-DD HH:mm:ss"
+                    )
+                  };
+                });
+              }
 
               return orderItem;
             });
@@ -148,6 +244,15 @@ export default {
     [ORDER_DELETE_ORDER](context, payload) {
       context.commit(ORDER_DELETE_ORDER, {
         orderId: payload.orderId
+      });
+    },
+    [ORDER_CHANGE_FILTER_PROCESS](context, payload) {
+      context.commit(ORDER_CHANGE_FILTER_PROCESS, payload);
+    },
+    [ORDER_DELETE_PROCESS](context, payload) {
+      context.commit(ORDER_DELETE_PROCESS, {
+        orderId: payload.orderId,
+        processId: payload.processId
       });
     }
   }

@@ -12,5 +12,7 @@ export const ORDER_CHANGE_VISIBLE_EDIT = "orderChangeVisibleEdit";
 export const ORDER_EDIT_ORDER = "orderEditOrder";
 export const ORDER_CREATE_ORDER = "orderCreateOrder";
 export const ORDER_DELETE_ORDER = "orderDeleteOrder";
+export const ORDER_CHANGE_FILTER_PROCESS = "orderChangeFilterProcess";
+export const ORDER_DELETE_PROCESS = "orderDeleteProcess";
 
 export const WINDOW_RESIZE = "windowResize";

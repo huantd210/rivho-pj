@@ -13,7 +13,9 @@ export default {
   state: () => {
     return {
       machineList: [],
-      filterMachine: "",
+      filterMachine: {
+        id: ""
+      },
       machineEdit: "",
       isVisibleDialogCreate: false,
       isVisibleDialogEdit: false
@@ -22,10 +24,9 @@ export default {
   getters: {
     getMachineList: state => state.machineList,
     getMachineListByFilter: state => {
-      if (state.filterMachine && state.filterMachine.code) {
-        console.log("A");
+      if (state.filterMachine && state.filterMachine.id) {
         return state.machineList.filter(
-          machine => machine.code === state.filterMachine.code
+          machine => machine.id === state.filterMachine.id
         );
       }
 
@@ -34,8 +35,7 @@ export default {
     getCodeMachineList: state =>
       state.machineList.map(machine => {
         return {
-          id: machine.id,
-          code: machine.code
+          id: machine.id
         };
       }),
     getFilterMachine: state => state.filterMachine,
@@ -74,12 +74,11 @@ export default {
           const result = await axios.get("machines");
 
           if (result.data.length > 0) {
-            let machineList = result.data.map(item => {
+            let machineList = result.data.map(machine => {
               return {
-                id: item.id,
-                code: item.code,
-                name: item.name,
-                describe: item.describe
+                id: machine.id,
+                name: machine.name,
+                describe: machine.describe
               };
             });
 
