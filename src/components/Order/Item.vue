@@ -151,6 +151,7 @@ export default {
 
 .order-item__list-process li {
   padding: 6px;
+  color: #ffffff;
   background-color: #576574;
 }
 </style>
