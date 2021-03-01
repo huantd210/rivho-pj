@@ -3,7 +3,7 @@ import queryString from "query-string";
 
 // Set up default config for http requests
 const axiosClient = axios.create({
-  baseURL: "http://192.168.1.212:3000",
+  baseURL: process.env.VUE_API_URL,
   paramsSerializer: params => queryString.stringify(params)
 });
 

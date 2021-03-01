@@ -78,7 +78,7 @@ export default {
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-columns: 25% 75%;
+  grid-template-columns: 20% 80%;
   grid-template-rows: 100%;
 }
 
