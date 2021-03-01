@@ -46,10 +46,15 @@ export default {
 </script>
 
 <style>
+@font-face {
+  font-family: "Yu Gothic";
+  src: local("Yu Gothic"), url("/assets/fonts/yugothib.ttf") format("truetype");
+}
+
 * {
   margin: 0;
   padding: 0;
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Yu Gothic", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   box-sizing: border-box;
