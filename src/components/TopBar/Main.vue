@@ -223,10 +223,10 @@ export default {
 }
 
 .top-bar__navigation__select-day {
-  width: 80px;
+  width: 90px;
   height: 32px;
   margin-left: 5px;
-  font-size: 14px;
+  font-size: 13px;
   border: 1px solid #01a3a4;
   border-bottom-width: 2px;
   border-radius: 4px;

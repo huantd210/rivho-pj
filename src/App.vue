@@ -81,7 +81,7 @@ export default {
 
 #app {
   height: 100vh;
-  min-width: 1000px;
+  min-width: 1100px;
   text-align: center;
   font-size: 16px;
   background-color: #222f3e;
@@ -94,12 +94,12 @@ export default {
   height: 100%;
   width: 100%;
   padding: 8px 12px;
-  min-width: 1000px;
+  min-width: 1100px;
   grid-row: 1 / 2;
 }
 
 .app__main {
-  min-width: 1000px;
+  min-width: 1100px;
   height: 100%;
   padding: 8px 12px;
   grid-row: 2 / 3;

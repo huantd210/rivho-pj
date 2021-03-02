@@ -174,7 +174,7 @@ export default {
 <style scoped>
 .order-item {
   padding-top: 2px;
-  padding-left: 8px;
+  padding-left: 6px;
   padding-bottom: 2px;
   margin-bottom: 3px;
   border-top-left-radius: 6px;
@@ -192,7 +192,7 @@ export default {
 
 .order-item__extend {
   padding-bottom: 6px;
-  margin-right: 8px;
+  margin-right: 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -216,8 +216,8 @@ export default {
 .order-item__action {
   padding-top: 2px;
   padding-bottom: 2px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 6px;
+  padding-right: 6px;
   background-color: #222f3e;
   display: flex;
   flex-direction: column;
