@@ -15,9 +15,9 @@
         </div>
         <div class="gantt__machine-item__left__describe"></div>
       </div>
-      <div class="gantt__machine-item__right">
+      <!-- <div class="gantt__machine-item__right">
         <span>{{ machine.name }}</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -85,7 +85,7 @@ export default {
 .gantt__machine-item__left__action,
 .gantt__machine-item__left__describe {
   text-align: start;
-  padding-top: 3px;
+  padding-top: 30px;
   padding-left: 6px;
 }
 

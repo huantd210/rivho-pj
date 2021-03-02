@@ -41,37 +41,39 @@
           popper-class="popper-for-input"
         >
         </el-date-picker>
-
-        <div class="top-bar__navigation__select-day">
-          <span
-            class="top-bar__navigation__select-day__btn-double"
-            @click="increaseDateFilterOrder(-2)"
-          >
-            <i class="el-icon-d-arrow-left"></i>
-          </span>
-          <span
-            class="top-bar__navigation__select-day__btn"
-            @click="increaseDateFilterOrder(-1)"
-          >
-            <i class="el-icon-arrow-left"></i>
-          </span>
-          <span class="top-bar__navigation__select-day__text">{{
-            getDayFilterDate
-          }}</span>
-          <span
-            class="top-bar__navigation__select-day__btn"
-            @click="increaseDateFilterOrder(1)"
-          >
-            <i class="el-icon-arrow-right"></i>
-          </span>
-          <span
-            class="top-bar__navigation__select-day__btn-double"
-            @click="increaseDateFilterOrder(2)"
-          >
-            <i class="el-icon-d-arrow-right"></i>
-          </span>
-        </div>
+        <div style="margin-left: 4px">(月)</div>
       </div>
+
+      <div class="top-bar__navigation__select-day">
+        <span
+          class="top-bar__navigation__select-day__btn-double"
+          @click="increaseDateFilterOrder(-2)"
+        >
+          <i class="el-icon-d-arrow-left"></i>
+        </span>
+        <span
+          class="top-bar__navigation__select-day__btn"
+          @click="increaseDateFilterOrder(-1)"
+        >
+          <i class="el-icon-arrow-left"></i>
+        </span>
+        <span class="top-bar__navigation__select-day__text">{{
+          getDayFilterDate
+        }}</span>
+        <span
+          class="top-bar__navigation__select-day__btn"
+          @click="increaseDateFilterOrder(1)"
+        >
+          <i class="el-icon-arrow-right"></i>
+        </span>
+        <span
+          class="top-bar__navigation__select-day__btn-double"
+          @click="increaseDateFilterOrder(2)"
+        >
+          <i class="el-icon-d-arrow-right"></i>
+        </span>
+      </div>
+
       <div class="top-bar__navigation__select">
         <div class="top-bar__navigation__label">
           <span>スケール</span>
@@ -225,7 +227,7 @@ export default {
 .top-bar__navigation__select-day {
   width: 90px;
   height: 32px;
-  margin-left: 5px;
+  margin-left: 8px;
   font-size: 13px;
   border: 1px solid #01a3a4;
   border-bottom-width: 2px;
@@ -255,7 +257,7 @@ export default {
 
 .top-bar__navigation__select,
 .top-bar__navigation__filter-date {
-  margin-right: 15px;
+  margin-left: 8px;
   display: flex;
   justify-content: center;
   align-items: center;

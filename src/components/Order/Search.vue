@@ -4,11 +4,11 @@
       <span>オーダーリスト</span>
     </div>
     <div class="order-search__right">
-      <div class="order-search__action">
-        <el-button-custom :style="{ padding: '8px 24px', margin: 0 }">
-          検索
-        </el-button-custom>
-      </div>
+      <el-button-custom
+        :style="{ padding: '8px 24px', margin: 0, width: '100%' }"
+      >
+        検索
+      </el-button-custom>
     </div>
   </div>
 </template>
@@ -38,12 +38,12 @@ export default {
 
 .order-search__left {
   text-align: left;
-  min-width: 120px;
+  min-width: 150px;
   flex: 1 1 30%;
 }
 
 .order-search__left span {
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .order-search__right {
@@ -53,6 +53,7 @@ export default {
   flex: 1 1 70%;
   justify-content: flex-end;
   display: flex;
+  max-width: 125px;
 }
 
 .order-search__input {

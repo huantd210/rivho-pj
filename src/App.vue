@@ -284,6 +284,11 @@ export default {
   border-color: #576574;
 }
 
+.el-tooltip__popper.is-dark {
+  color: #01a3a4;
+  border-color: #222f3e;
+}
+
 @media screen and (max-width: 320px) {
   #app {
     font-size: calc(16px + 6 * ((100vw - 320px) / 680));
