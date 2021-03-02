@@ -228,7 +228,7 @@ export default {
   text-align: left;
   padding-top: 5px;
   padding-bottom: 5px;
-  padding-right: 5px;
+  padding-right: 8px;
   font-size: 14px;
   border-top: 1px solid #ffffff;
 }
