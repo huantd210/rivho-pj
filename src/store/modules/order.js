@@ -107,6 +107,11 @@ export default {
       processIdList = [...new Set(processIdList)];
       return processIdList;
     },
+    getTotalQuantityOrderListFilter: (state, getters) => {
+      return getters.getOrderListByFilter.reduce((total, curOrder) => {
+        return total + curOrder.quantity;
+      }, 0);
+    },
     getOrderEdit: state => state.orderEdit,
     getVisibleDialogCreate: state => state.isVisibleDialogCreate,
     getVisibleDialogEdit: state => state.isVisibleDialogEdit
@@ -126,14 +131,13 @@ export default {
       state.orderEdit = payload.orderEdit;
     },
     [ORDER_CREATE_ORDER](state, payload) {
-      payload.orderCreate.id = state.orderList.length;
-      state.orderList.push(payload.orderCreate);
+      // payload.orderCreate.id = state.orderList.length;
+      // state.orderList.push(payload.orderCreate);
     },
     [ORDER_EDIT_ORDER](state, payload) {
-      console.log(payload);
-      state.orderList = state.orderList.map(order =>
-        order.id === payload.orderEdit.id ? payload.orderEdit : order
-      );
+      // state.orderList = state.orderList.map(order =>
+      //   order.id === payload.orderEdit.id ? payload.orderEdit : order
+      // );
     },
     [ORDER_DELETE_ORDER](state, payload) {
       state.orderList = state.orderList.filter(

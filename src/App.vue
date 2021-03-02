@@ -115,7 +115,7 @@ export default {
 
 .app__main__left {
   margin-right: 10px;
-  padding-top: 24px;
+  padding-top: 6px;
   padding-left: 8px;
   border-top-left-radius: 6px;
   background-color: #576574;

@@ -31,19 +31,19 @@ export default {
 
 <style scoped>
 .order-search {
-  margin-bottom: 12px;
+  margin-bottom: 3px;
   padding-right: 6px;
   display: flex;
 }
 
 .order-search__left {
+  text-align: left;
   min-width: 120px;
   flex: 1 1 30%;
 }
 
 .order-search__left span {
   font-size: 16px;
-  font-weight: bold;
 }
 
 .order-search__right {
