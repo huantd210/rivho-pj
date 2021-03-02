@@ -9,7 +9,7 @@
           <font-awesome-icon icon="exclamation-triangle" />
         </div>
         <el-button-custom
-          :style="{ padding: '4px', borderRadius: '50%' }"
+          :style="{ padding: '4px', borderRadius: '50%', borderWidth: 0 }"
           @click="handleChangeVisibleProcessList"
           class="order-item__action__btn-delete"
           v-if="isVisibleProcessList"
@@ -18,7 +18,7 @@
         </el-button-custom>
         <el-button-custom
           v-else
-          :style="{ padding: '4px', borderRadius: '50%' }"
+          :style="{ padding: '4px', borderRadius: '50%', borderWidth: 0 }"
           @click="handleChangeVisibleProcessList"
         >
           <i class="el-icon-plus"></i>
@@ -185,16 +185,17 @@ export default {
 .order-item__wrapper {
   width: 100%;
   padding-top: 2px;
-  border-bottom: 2px solid #b33939;
+  padding-bottom: 2px;
   overflow: hidden;
   display: flex;
 }
 
 .order-item__extend {
-  padding-bottom: 3px;
-  padding-right: 6px;
+  padding-bottom: 6px;
+  margin-right: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   flex-direction: column;
 }
 
@@ -204,7 +205,7 @@ export default {
 }
 
 .order-item__extend .order-item__extend__warning {
-  color: #feca57;
+  color: #fff200;
   font-size: 16px;
 }
 
@@ -216,6 +217,7 @@ export default {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 10px;
+  padding-right: 10px;
   background-color: #222f3e;
   display: flex;
   flex-direction: column;
@@ -226,7 +228,9 @@ export default {
   text-align: left;
   padding-top: 5px;
   padding-bottom: 5px;
-  padding-left: 15px;
+  padding-right: 5px;
+  font-size: 14px;
+  border-top: 1px solid #ffffff;
 }
 
 .order-item__list-process li {

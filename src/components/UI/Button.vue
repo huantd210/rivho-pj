@@ -31,7 +31,6 @@ export default {
 
 <style scoped>
 .btn {
-  margin-right: 5px;
   padding: 6px 12px;
   border: 1px solid var(--color);
   border-bottom-width: 2px;
